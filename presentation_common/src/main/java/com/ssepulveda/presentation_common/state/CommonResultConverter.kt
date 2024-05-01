@@ -14,7 +14,6 @@ abstract class CommonResultConverter<T : Any, R : Any> {
                 UiState.Error(result.exception.localizedMessage.orEmpty())
             }
             is Result.Success -> {
-                Log.d("POTATO", "LIST ${result.data}")
                 UiState.Success(convertSuccess(result.data))
             }
         }

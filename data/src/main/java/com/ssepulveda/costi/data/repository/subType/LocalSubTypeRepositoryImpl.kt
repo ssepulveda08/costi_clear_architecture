@@ -14,7 +14,6 @@ class LocalSubTypeRepositoryImpl(
 ) : LocalSubTypeRepository {
 
     override fun getAllSubType(): Flow<List<SubTypeCost>> {
-        Log.d("POTATO", "getAllSubType")
         return subTypeDao.loadAllB().map { subTypes ->
             subTypes.map { SubTypeCost(it.id, it.name, it.type) }
         }

@@ -23,7 +23,7 @@ class LocalBillRepositoryImpl(
                     id = it.id ?: 0,
                     subType = it.subType,
                     description = it.description,
-                    value = it.value,
+                    value = it.value.toDouble(),
                     month = it.month
                 )
             } ?: listOf()
@@ -36,8 +36,8 @@ class LocalBillRepositoryImpl(
         } else {
             Date()
         }
-        return  flow<Long> {
-           val id = billEntityDao.insert(
+        return flow<Long> {
+            val id = billEntityDao.insert(
                 BillEntity(
                     description = bill.description,
                     subType = bill.subType,
@@ -47,13 +47,13 @@ class LocalBillRepositoryImpl(
                     updateDate = date.toString(),
                 )
             )
-            Log.d("POTATO", "IDIDIDIDIDID: $id")
             emit(id)
         }
     }
 
     override suspend fun deleteBill(bill: Bill) {
-        bill.id?.let {id ->
+        bill.id?.let { id ->
+            Log.d("POTATO", "DELETE BILL ${bill.id}")
             billEntityDao.deleteById(id)
         }
     }

@@ -15,7 +15,7 @@ abstract class UseCase<I : UseCase.Request, O : UseCase.Response>(private val co
         }
         .flowOn(configuration.dispatcher)
         .catch {
-            emit(Result.Error(Throwable()))
+            emit(Result.Error(it))
         }
 
     internal abstract fun process(request: I): Flow<O>

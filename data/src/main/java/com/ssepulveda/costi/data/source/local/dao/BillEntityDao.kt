@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BillEntityDao {
 
-    @Query("SELECT * FROM BillEntity WHERE month = :month")
+    @Query("SELECT * FROM BillEntity WHERE month = :month ORDER BY id DESC" )
     fun getAllByMonth(month: Int): Flow<List<BillEntity>?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

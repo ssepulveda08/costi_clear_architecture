@@ -3,6 +3,7 @@ package com.ssepulveda.presentation_add_bill.add
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.domain.entity.Bill
+import com.ssepulveda.costi.domain.entity.Result
 import com.ssepulveda.costi.domain.useCase.GetTypesAndSubTypesUseCase
 import com.ssepulveda.costi.domain.useCase.SaveBillUseCase
 import com.ssepulveda.presentation_common.state.MviViewModel
@@ -97,7 +98,14 @@ class AddBillViewModel @Inject constructor(
                             )
                         )
                     ).collect {
-                        submitSingleEvent(AddBillSingleEvent.Close)
+                        when(it) {
+                            is Result.Error -> {
+                                submitState(UiState.Error(it.exception.localizedMessage.orEmpty()))
+                            }
+                            is Result.Success -> {
+                                submitSingleEvent(AddBillSingleEvent.Close)
+                            }
+                        }
                     }
                 }
             }

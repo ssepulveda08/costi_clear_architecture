@@ -24,20 +24,19 @@ class GetHomeInformationUseCase(
     @OptIn(FlowPreview::class)
     override fun process(request: Request): Flow<Response> =
         localConfigurationRepository.getMonthSet().flatMapConcat { idMonth ->
-            Log.d("POTATO", "1: $idMonth")
             localBillRepository.getAllBillsByMonth(idMonth).map {
-                Log.d("POTATO", "2: $it")
-                    HomeScreen(
-                        idMonth,
-                        it
-                    )
+                HomeScreen(
+                    idMonth,
+                    0.0,
+                    it ?: listOf()
+                )
             }.flatMapConcat { model ->
-                Log.d("POTATO", "3: $model")
                 localReportForMonthRepository.getReportForMonth(model.idMonth).map {
-                    Log.d("POTATO", "4: $it")
-                    Response(
-                        model.copy(dataReport = it)
-                    )
+                    model.copy(dataReportType = it.reportForType, totalMonth = it.total ?: 0.0)
+                }.flatMapConcat { model ->
+                    localReportForMonthRepository.getCurrentWeekReport(model.idMonth).map {
+                        Response(model.copy(dataReportWeed = it ?: listOf()))
+                    }
                 }
             }
         }

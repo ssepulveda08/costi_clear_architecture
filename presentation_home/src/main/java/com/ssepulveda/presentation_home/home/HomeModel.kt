@@ -1,11 +1,17 @@
 package com.ssepulveda.presentation_home.home
 
-import com.github.tehras.charts.line.LineChartData
+import com.ssepulveda.presentation_home.home.ui.charts.Bar
+import com.ssepulveda.presentation_home.home.ui.charts.CircleChart
 
 data class HomeModel(
-    val nameMoth: String,
+    val idMonth: Int,
+    val nameMonth: String,
+    val totalMonth: Double,
+    val currentDate: String,
+    val isCurrentMonthHigher: Boolean,
     val bills: List<BillModel>,
-    val report: List<LineChartData.Point> = listOf(),
+    val reportForType: List<CircleChart> = listOf(),
+    val reportForWeek: List<Bar> = listOf(),
 )
 
 data class BillModel(

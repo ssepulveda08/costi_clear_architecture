@@ -5,6 +5,7 @@ import com.ssepulveda.costi.domain.repository.LocalConfigurationRepository
 import com.ssepulveda.costi.domain.repository.LocalCostTypeRepository
 import com.ssepulveda.costi.domain.repository.LocalReportForMonthRepository
 import com.ssepulveda.costi.domain.repository.LocalSubTypeRepository
+import com.ssepulveda.costi.domain.useCase.DeleteBillUseCase
 import com.ssepulveda.costi.domain.useCase.GetAllBillsByMonthUseCase
 import com.ssepulveda.costi.domain.useCase.GetCostTypeUseCase
 import com.ssepulveda.costi.domain.useCase.GetCostTypeWithSubTypeUseCase
@@ -28,7 +29,7 @@ import kotlinx.coroutines.Dispatchers
 class UseCaseModule {
 
     @Provides
-    fun provideUseCaseConfiguration(): UseCase.Configuration = UseCase.Configuration(Dispatchers.Unconfined)
+    fun provideUseCaseConfiguration(): UseCase.Configuration = UseCase.Configuration(Dispatchers.IO)
 
     @Provides
     fun provideGetCostTypeUseCase(
@@ -134,6 +135,15 @@ class UseCaseModule {
         configuration,
         localBillRepository,
         localConfigurationRepository
+    )
+
+    @Provides
+    fun provideDeleteBillUseCase(
+        configuration: UseCase.Configuration,
+        localBillRepository: LocalBillRepository,
+    ): DeleteBillUseCase = DeleteBillUseCase(
+        configuration,
+        localBillRepository,
     )
 
 }

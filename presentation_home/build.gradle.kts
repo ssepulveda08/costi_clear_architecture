@@ -61,7 +61,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     // Chart
-    implementation(libs.charts)
+    //implementation(libs.charts)
 
     // Hilt
     implementation(libs.hilt.android)

@@ -1,14 +1,18 @@
 package com.ssepulveda.presentation_add_bill.add
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,11 +22,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ssepulveda.presentation_add_bill.ui.SingleToolbar
@@ -50,6 +56,7 @@ fun AddBillScreen(
                 is AddBillSingleEvent.AddBill -> {
 
                 }
+
                 is AddBillSingleEvent.Close -> {
                     navController.navigateUp()
                 }
@@ -59,6 +66,7 @@ fun AddBillScreen(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FormAddBill(viewModel: AddBillViewModel, navController: NavController) {
 
@@ -79,9 +87,17 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(start = 16.dp, end = 16.dp),
+                .padding(start = 16.dp, end = 16.dp)
+                .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+
+            Spacer(modifier = Modifier.padding(8.dp))
+            Text(
+                text = "Asignar nuevo gasto. Por favor, selecciona el tipo y subtipo correspondientes que mejor describan las características de este gasto.",
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
+            )
             Spacer(modifier = Modifier.padding(8.dp))
             TextField(
                 modifier = Modifier.fillMaxWidth(),
@@ -90,17 +106,29 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
                     viewModel.setDescription(it)
                 },
                 label = { Text(text = "Descripcion") },
+                textStyle = MaterialTheme.typography.bodyLarge,
+                shape = MaterialTheme.shapes.small,
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
             )
             Spacer(modifier = Modifier.padding(8.dp))
             SpinnerComponent(
                 types,
+                label = "Typo de Gasto",
                 selectedType
             ) {
                 selectedType = it
                 viewModel.submitAction(AddBillUiAction.SelectedType(it))
             }
             Spacer(modifier = Modifier.padding(8.dp))
-            SpinnerComponent(subTypes, subTypeSelected) {
+            SpinnerComponent(
+                items = subTypes,
+                label = "Sub Typo de Gasto",
+                subTypeSelected
+            ) {
                 viewModel.submitAction(AddBillUiAction.SelectedSubType(it))
             }
             Spacer(modifier = Modifier.padding(8.dp))
@@ -114,6 +142,13 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
                 visualTransformation = MoneyVisualTransformation,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(text = "Ingresa un valor") },
+                textStyle = MaterialTheme.typography.bodyLarge,
+                shape = MaterialTheme.shapes.small,
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
             )
             Spacer(modifier = Modifier.padding(8.dp))
             Button(

@@ -18,7 +18,7 @@ class GetAllBillsByMonthUseCase(
 
     override fun process(request: Request): Flow<Response> {
         return localBillRepository.getAllBillsByMonth(request.month).map {
-            Response(it)
+            Response(it ?: listOf())
         }
     }
 

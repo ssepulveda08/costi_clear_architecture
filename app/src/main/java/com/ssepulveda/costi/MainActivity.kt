@@ -15,10 +15,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ssepulveda.costi.splash.SplashScreen
 import com.ssepulveda.costi.splash.SplashViewModel
-import com.ssepulveda.costi.ui.theme.CostiTheme
 import com.ssepulveda.presentation_add_bill.add.AddBillScreen
 import com.ssepulveda.presentation_add_bill.add.AddBillViewModel
 import com.ssepulveda.presentation_common.navigation.NavRoutes
+import com.ssepulveda.presentation_common.ui.theme.AppTheme
 import com.ssepulveda.presentation_home.home.HomeScreen
 import com.ssepulveda.presentation_home.home.HomeViewModel
 import com.ssepulveda.presentation_welcome.welcome.WelcomeScreen
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            CostiTheme {
+            AppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
