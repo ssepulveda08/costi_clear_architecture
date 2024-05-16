@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -58,6 +60,7 @@ dependencies {
     implementation(project(":presentation_welcome"))
     implementation(project(":presentation_home"))
     implementation(project(":presentation_add_bill"))
+    implementation(project(":analytics"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

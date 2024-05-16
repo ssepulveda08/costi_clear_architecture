@@ -41,6 +41,7 @@ android {
 
 dependencies {
 
+    implementation(project(":modal_dialogs"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
@@ -54,6 +55,7 @@ dependencies {
     //Navigation
     implementation(libs.navigation.compose)
     implementation(project(":domain"))
+    implementation(libs.androidx.ui.text.google.fonts)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

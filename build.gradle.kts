@@ -6,6 +6,8 @@ plugins {
     //id("com.google.dagger.hilt.android") version "2.46" apply false
     id("com.google.dagger.hilt.android") version "2.51.1" apply false
     alias(libs.plugins.androidLibrary) apply false
+    id("com.google.firebase.crashlytics") version "2.9.9" apply false
+    id("com.google.gms.google-services") version "4.4.1" apply false
 }
 
 buildscript {
@@ -16,5 +18,6 @@ buildscript {
     dependencies {
         // other plugins...
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.51.1")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.9")
     }
 }

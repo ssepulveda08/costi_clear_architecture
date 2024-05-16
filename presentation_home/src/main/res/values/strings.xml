@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="copy_monday">Lunes</string>
+    <string name="copy_tuesday">Martes</string>
+    <string name="copy_wednesday">Miércoles</string>
+    <string name="copy_thursday">Jueves</string>
+    <string name="copy_friday">Viernes</string>
+    <string name="copy_saturday">Sábado</string>
+    <string name="copy_sunday">Domingo</string>
+    <string name="copy_no_data">Sin Datos</string>
+</resources>

@@ -25,6 +25,7 @@ class GetHomeInformationUseCase(
     override fun process(request: Request): Flow<Response> =
         localConfigurationRepository.getMonthSet().flatMapConcat { idMonth ->
             localBillRepository.getAllBillsByMonth(idMonth).map {
+                Log.d("POTATO", "MES ID $idMonth")
                 HomeScreen(
                     idMonth,
                     0.0,
@@ -33,9 +34,9 @@ class GetHomeInformationUseCase(
             }.flatMapConcat { model ->
                 localReportForMonthRepository.getReportForMonth(model.idMonth).map {
                     model.copy(dataReportType = it.reportForType, totalMonth = it.total ?: 0.0)
-                }.flatMapConcat { model ->
-                    localReportForMonthRepository.getCurrentWeekReport(model.idMonth).map {
-                        Response(model.copy(dataReportWeed = it ?: listOf()))
+                }.flatMapConcat { modelEnd ->
+                    localReportForMonthRepository.getCurrentWeekReport(modelEnd.idMonth).map {
+                        Response(modelEnd.copy(dataReportWeed = it ?: listOf()))
                     }
                 }
             }

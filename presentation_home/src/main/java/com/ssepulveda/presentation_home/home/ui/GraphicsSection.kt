@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,13 +26,13 @@ fun GraphicsSection(homeModel: HomeModel?) {
     var option by remember {
         mutableIntStateOf(0)
     }
-    Column(
+    Card(
         modifier = Modifier
             .padding(start = 16.dp, end = 16.dp)
             .height(250.dp)
             .fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         TwoOptionToggle {
             option = it
         }

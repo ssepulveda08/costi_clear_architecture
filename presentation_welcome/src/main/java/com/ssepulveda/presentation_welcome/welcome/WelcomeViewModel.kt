@@ -55,7 +55,9 @@ class WelcomeViewModel @Inject constructor(
 
     private fun saveConfig() {
         viewModelScope.launch {
-            val combined = updateInitialConfigurationUseCase.execute(UpdateInitialConfigurationUseCase.Request(true)).combine(
+            val combined = updateInitialConfigurationUseCase.execute(
+                UpdateInitialConfigurationUseCase.Request(true)
+            ).combine(
                 saveCurrentMonthUseCase.execute(SaveCurrentMonthUseCase.Request(getCurrentMonth()))
             ) { a, b ->
                 "$a - $b"
@@ -67,7 +69,7 @@ class WelcomeViewModel @Inject constructor(
         }
     }
 
-    private fun getCurrentMonth() :Int {
+    private fun getCurrentMonth(): Int {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.MONTH) + 1
     }

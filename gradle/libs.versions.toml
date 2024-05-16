@@ -22,6 +22,8 @@ datastorePreferencesCore = "1.0.0"
 navigationComposVersion = "2.7.7"
 hiltVavigationComposeVersion = "1.0.0"
 chartsVersion = "0.2.4-alpha"
+uiTextGoogleFonts = "1.6.7"
+firebaseVersion = "32.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,7 +67,10 @@ androidx-datastore = { module = "androidx.datastore:datastore-preferences", vers
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposVersion" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltVavigationComposeVersion" }
 charts = { module = "com.github.tehras:charts", version.ref = "chartsVersion" }
-
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseVersion" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

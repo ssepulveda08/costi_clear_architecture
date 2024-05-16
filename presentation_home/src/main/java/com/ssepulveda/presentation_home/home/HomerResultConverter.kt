@@ -11,6 +11,7 @@ import com.ssepulveda.presentation_common.state.UiState
 import com.ssepulveda.presentation_common.ui.generateColorRandom
 import com.ssepulveda.presentation_common.ui.getCurrentDate
 import com.ssepulveda.presentation_common.ui.getListColor
+import com.ssepulveda.presentation_home.R
 import com.ssepulveda.presentation_home.home.ui.charts.Bar
 import com.ssepulveda.presentation_home.home.ui.charts.CircleChart
 import java.text.SimpleDateFormat
@@ -26,6 +27,7 @@ class HomerResultConverter @Inject constructor() :
     override fun convertSuccess(data: GetHomeInformationUseCase.Response): HomeModel {
         val month = getDefaultMonths()[data.model.idMonth - 1]
         val response = data.model
+        Log.d("POTATO", "RESPONSE $response")
         val bills = data.model.bills.map {
             BillModel(
                 it.id ?: 0,
@@ -79,31 +81,31 @@ private fun getDefaultListWeed(): Array<Bar> {
         Bar(
             value = 0f,
             color = listColor[0],
-            label = "Lunes"
+            label = R.string.copy_monday
         ), Bar(
             value = 0f,
             color = listColor[1],
-            label = "Martes"
+            label =  R.string.copy_tuesday
         ), Bar(
             value = 0f,
             color = listColor[2],
-            label = "Miercoles"
+            label = R.string.copy_wednesday
         ), Bar(
             value = 0f,
             color = listColor[3],
-            label = "Jueves"
+            label = R.string.copy_thursday
         ), Bar(
             value = 0f,
             color = listColor[4],
-            label = "Viernes"
+            label = R.string.copy_friday
         ), Bar(
             value = 0f,
             color = listColor[5],
-            label = "Sabado"
+            label = R.string.copy_saturday
         ), Bar(
             value = 0f,
             color = listColor[6],
-            label = "Domingo"
+            label = R.string.copy_sunday
         )
     )
 }

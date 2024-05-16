@@ -1,5 +1,6 @@
 package com.ssepulveda.presentation_home.home.ui.charts
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -17,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -25,7 +28,7 @@ import androidx.compose.ui.unit.sp
 
 private const val PADDING_CHART = 5
 private const val PADDING_VERTICAL_AND_HORIZONTAL = 100
-private const val PADDING_VERTICAL = 50f
+private const val PADDING_VERTICAL = 60f
 
 @Composable
 fun BarChart(
@@ -36,11 +39,11 @@ fun BarChart(
 ) {
     Surface(
         modifier = Modifier.then(modifier),
-        shape = RoundedCornerShape(8.dp),
-        color = background,
+      //  shape = RoundedCornerShape(8.dp),
+       // color = background,
         tonalElevation = 4.dp
     ) {
-
+        val context = LocalContext.current
         val textMeasurer = rememberTextMeasurer()
         Column {
             val animationProgress = remember { Animatable(0f) }
@@ -93,7 +96,7 @@ fun BarChart(
 
                 // Draw Eje Horizontal
                 drawLine(
-                    start = Offset(x = 48f, y = size.height - PADDING_CHART),
+                    start = Offset(x = PADDING_VERTICAL-2, y = size.height - PADDING_CHART),
                     end = Offset(x = size.width, y = size.height - PADDING_CHART),
                     color = Color.Red,
                     strokeWidth = 5f
@@ -125,7 +128,8 @@ fun BarChart(
                         fontSize = 8.sp,
                         color = Color.Black,
                     )
-                    val newValue = textMeasurer.measure(bar.label, styleLabel)
+                    val textLabel = context.resources.getText(bar.label).toString()
+                    val newValue = textMeasurer.measure(textLabel, styleLabel)
                     drawText(
                         newValue,
                         topLeft = Offset(
@@ -154,7 +158,7 @@ private fun Int.converterText(): String {
 }
 
 data class Bar(
-    val label: String,
+    @StringRes val label: Int,
     val value: Float,
     val color: Color? = null
 )

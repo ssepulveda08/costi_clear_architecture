@@ -65,6 +65,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(project(":modal_dialogs"))
     kapt(libs.hilt.compiler)
 
     // Navigation Compose

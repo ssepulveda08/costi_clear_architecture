@@ -3,15 +3,13 @@ package com.ssepulveda.presentation_home.home
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.domain.entity.Bill
-import com.ssepulveda.costi.domain.entity.Month
 import com.ssepulveda.costi.domain.useCase.DeleteBillUseCase
 import com.ssepulveda.costi.domain.useCase.GetHomeInformationUseCase
 import com.ssepulveda.costi.domain.useCase.SaveCurrentMonthUseCase
-import com.ssepulveda.costi.domain.useCase.UpdateInitialConfigurationUseCase
+import com.ssepulveda.modal_dialogs.entities.Dialog
 import com.ssepulveda.presentation_common.state.MviViewModel
 import com.ssepulveda.presentation_common.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -30,8 +28,20 @@ class HomeViewModel @Inject constructor(
             getHomeInformationUseCase.execute(GetHomeInformationUseCase.Request).map {
                 converter.convert(it)
             }.collect {
+                validateCurrentMonth(it)
                 submitState(it)
             }
+        }
+    }
+
+    private fun validateCurrentMonth(uiState: UiState<HomeModel>) {
+        if (uiState is UiState.Success && uiState.data.isCurrentMonthHigher) {
+            submitDialog(Dialog.DialogDefault(
+                "Aviso Importante",
+                "Actualmente el mes ya cambio, si quieres actualizar el mes seleccionado oprime continuar, si queires continuar en el mes $[mens] cierra el dialogo",
+                { hideDialog() },
+                { updateMonth() }
+            ))
         }
     }
 
@@ -53,17 +63,31 @@ class HomeViewModel @Inject constructor(
                     )
                 )
             ).collect {
-                loadData()
+                //loadData()
+                submitDialog(Dialog.DialogDefault(
+                    "Proceso Exitoso!",
+                    "Se elimino Correctamente el Item",
+                    {
+                        loadData()
+                        hideDialog()
+                    },
+                    {
+                        hideDialog()
+                        loadData()
+                    }
+                ))
             }
         }
     }
 
     private fun updateMonth() {
+        hideDialog()
+        submitState(UiState.Loading)
         viewModelScope.launch {
-            submitState(UiState.Loading)
-            saveCurrentMonthUseCase.execute(SaveCurrentMonthUseCase.Request(getCurrentMonth())).collect {
-                loadData()
-            }
+            saveCurrentMonthUseCase.execute(SaveCurrentMonthUseCase.Request(getCurrentMonth()))
+                .collect {
+                    loadData()
+                }
         }
     }
 
