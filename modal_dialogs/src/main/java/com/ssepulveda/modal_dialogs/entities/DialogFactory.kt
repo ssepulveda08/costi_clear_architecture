@@ -18,7 +18,7 @@ fun DialogFactory(dialog: Dialog) {
 fun DialogTitleAndSubTitle(dialog: Dialog.DialogDefault) {
     AlertDialog(
         icon = {
-           // Icon(icon, contentDescription = "Example Icon")
+            // Icon(icon, contentDescription = "Example Icon")
         },
         title = {
             Text(text = dialog.title)
@@ -30,21 +30,25 @@ fun DialogTitleAndSubTitle(dialog: Dialog.DialogDefault) {
             dialog.onCancel.invoke()
         },
         confirmButton = {
-            TextButton(
-                onClick = {
-                    dialog.onSuccess.invoke()
+            dialog.textSuccess?.let { success ->
+                TextButton(
+                    onClick = {
+                        dialog.onSuccess.invoke()
+                    }
+                ) {
+                    Text(success)
                 }
-            ) {
-                Text("Confirm")
             }
         },
         dismissButton = {
-            TextButton(
-                onClick = {
-                    dialog.onCancel.invoke()
+            dialog.textCancel?.let { cancel ->
+                TextButton(
+                    onClick = {
+                        dialog.onCancel.invoke()
+                    }
+                ) {
+                    Text(cancel)
                 }
-            ) {
-                Text("Dismiss")
             }
         }
     )

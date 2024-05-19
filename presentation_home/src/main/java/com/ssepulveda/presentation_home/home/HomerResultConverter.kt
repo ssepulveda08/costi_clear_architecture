@@ -35,6 +35,7 @@ class HomerResultConverter @Inject constructor() :
                 it.description,
                 it.subType,
                 "",
+                it.date
             )
         }
 
@@ -55,6 +56,8 @@ class HomerResultConverter @Inject constructor() :
             totalMonth = response.totalMonth,
             currentDate = Date().getCurrentDate(),
             bills = bills,
+            maxValue = bills.maxOfOrNull { it.value } ?: 0.0,
+            minValue = bills.minOfOrNull { it.value } ?: 0.0,
             isCurrentMonthHigher = response.idMonth < getCurrentMonth(),
             reportForType = listForType.toList(),
             reportForWeek = getDataChartWeed(data.model.dataReportWeed)

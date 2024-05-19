@@ -7,6 +7,8 @@ data class HomeModel(
     val idMonth: Int,
     val nameMonth: String,
     val totalMonth: Double,
+    val maxValue: Double,
+    val minValue: Double,
     val currentDate: String,
     val isCurrentMonthHigher: Boolean,
     val bills: List<BillModel>,
@@ -20,4 +22,5 @@ data class BillModel(
     val description: String,
     val typeId: Int,
     val nameType: String,
+    val date: String,
 )

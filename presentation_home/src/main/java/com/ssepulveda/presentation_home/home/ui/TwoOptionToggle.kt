@@ -49,7 +49,7 @@ fun TwoOptionToggle(
             enabled = option != 0,
             shape = roundedLeftSquareRightShape(LocalDensity.current, 16.dp, 0.dp)
         ) {
-            Text(text = "Por Semana")
+            Text(text = "Por semana")
         }
         OutlinedButton(
             onClick = {
@@ -59,7 +59,7 @@ fun TwoOptionToggle(
             enabled = option != 1,
             shape = roundedLeftSquareRightShape(LocalDensity.current, 0.dp, 16.dp)
         ) {
-            Text(text = "Por Typo")
+            Text(text = "Por typo")
         }
     }
 }

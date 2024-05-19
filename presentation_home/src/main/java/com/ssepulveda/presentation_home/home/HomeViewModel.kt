@@ -1,6 +1,5 @@
 package com.ssepulveda.presentation_home.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.domain.entity.Bill
 import com.ssepulveda.costi.domain.useCase.DeleteBillUseCase
@@ -39,8 +38,10 @@ class HomeViewModel @Inject constructor(
             submitDialog(Dialog.DialogDefault(
                 "Aviso Importante",
                 "Actualmente el mes ya cambio, si quieres actualizar el mes seleccionado oprime continuar, si queires continuar en el mes $[mens] cierra el dialogo",
-                { hideDialog() },
-                { updateMonth() }
+                textCancel = "Cerrar",
+                textSuccess = "Actualizar",
+                onCancel = { hideDialog() },
+                onSuccess = { updateMonth() }
             ))
         }
     }
@@ -59,25 +60,27 @@ class HomeViewModel @Inject constructor(
                         subType = bill.typeId,
                         description = bill.description,
                         value = bill.value,
-                        month = 0
+                        month = 0,
+                        date = bill.date
                     )
                 )
             ).collect {
-                //loadData()
-                submitDialog(Dialog.DialogDefault(
-                    "Proceso Exitoso!",
-                    "Se elimino Correctamente el Item",
-                    {
-                        loadData()
-                        hideDialog()
-                    },
-                    {
-                        hideDialog()
-                        loadData()
-                    }
-                ))
+                submitDialog(
+                    Dialog.DialogDefault(
+                        title = "Proceso Exitoso!",
+                        description = "Se elimino Correctamente el Item",
+                        textSuccess = "OK",
+                        onSuccess = ::closeDialogDeletedBill,
+                        onCancel = ::closeDialogDeletedBill
+                    )
+                )
             }
         }
+    }
+
+    private fun closeDialogDeletedBill() {
+        hideDialog()
+        loadData()
     }
 
     private fun updateMonth() {
@@ -93,10 +96,23 @@ class HomeViewModel @Inject constructor(
 
     override fun initState(): UiState<HomeModel> = UiState.Loading
 
+    private fun showDeletionConfirmation(bill: BillModel) {
+        submitDialog(
+            Dialog.DialogDefault(
+                title = "Confirmar accion!",
+                description = "Esta seguro de eliminar el gasto: ${bill.description},\n\nUna vez eliminado no podra revertir los cambios",
+                textSuccess = "Eliminar",
+                textCancel = "Cancelar",
+                onSuccess = { deleteBill(bill) },
+                onCancel = { hideDialog() }
+            )
+        )
+    }
+
     override fun handleAction(action: HomeUiAction) {
         when (action) {
             is HomeUiAction.Load -> loadData()
-            is HomeUiAction.DeleteBill -> deleteBill(action.bill)
+            is HomeUiAction.DeleteBill -> showDeletionConfirmation(action.bill)
             is HomeUiAction.UpdateMonth -> updateMonth()
         }
     }

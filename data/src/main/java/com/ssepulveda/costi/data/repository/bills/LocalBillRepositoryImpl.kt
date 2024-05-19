@@ -24,7 +24,8 @@ class LocalBillRepositoryImpl(
                     subType = it.subType,
                     description = it.description,
                     value = it.value.toDouble(),
-                    month = it.month
+                    month = it.month,
+                    date = it.recordDate
                 )
             } ?: listOf()
         }

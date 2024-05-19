@@ -94,7 +94,8 @@ class AddBillViewModel @Inject constructor(
                                 subType = _subTypeSelected.value?.id ?: 0,
                                 description = _description.value,
                                 value = _value.value.toDouble(),
-                                month = 0
+                                month = 0,
+                                date = ""
                             )
                         )
                     ).collect {

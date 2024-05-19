@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,42 +28,53 @@ fun GraphicsSection(homeModel: HomeModel?) {
     var option by remember {
         mutableIntStateOf(0)
     }
-    Card(
-        modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp)
-            .height(250.dp)
-            .fillMaxSize()
+
+    Surface(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(8.dp),
+        // color = background,
+        tonalElevation = 4.dp
     ) {
-        Spacer(modifier = Modifier.height(4.dp))
-        TwoOptionToggle {
-            option = it
-        }
-        if (option == 0) {
-            BarChart(
-                homeModel?.reportForWeek ?: listOf(),
-                title = {
-                    Text(
-                        text = "Grafico por semana",
-                        modifier = Modifier.padding(8.dp),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                },
-                background = MaterialTheme.colorScheme.background,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        } else {
-            PieChart(
-                homeModel?.reportForType ?: listOf(),
-                title = {
-                    Text(
-                        text = "Grafico por tipo",
-                        modifier = Modifier.padding(8.dp),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                },
-                background = MaterialTheme.colorScheme.background,
-            )
+
+        Column {
+            TwoOptionToggle {
+                option = it
+            }
+            if (option == 0) {
+                BarChart(
+                    homeModel?.reportForWeek ?: listOf(),
+                    title = {
+                        Text(
+                            text = "Grafico por semana",
+                            modifier = Modifier.padding(
+                                bottom = 2.dp,
+                                start = 8.dp,
+                                end = 8.dp
+                            ),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    },
+                    modifier = Modifier
+                        .height(220.dp)
+                )
+            } else {
+                PieChart(
+                    homeModel?.reportForType ?: listOf(),
+                    title = {
+                        Text(
+                            text = "Grafico por tipo",
+                            modifier = Modifier.padding(
+                                bottom = 2.dp,
+                                start = 8.dp,
+                                end = 8.dp
+                            ),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    },
+                    modifier = Modifier
+                        .height(220.dp)
+                )
+            }
         }
     }
 }

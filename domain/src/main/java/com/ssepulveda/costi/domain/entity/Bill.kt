@@ -6,4 +6,5 @@ data class Bill(
     val description: String,
     val value: Double,
     val month: Int,
+    val date: String
 )

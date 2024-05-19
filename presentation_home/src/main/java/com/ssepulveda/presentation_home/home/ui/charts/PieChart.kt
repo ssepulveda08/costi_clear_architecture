@@ -34,79 +34,75 @@ import kotlin.math.sin
 fun PieChart(
     datos: List<CircleChart>,
     title: @Composable ColumnScope.() -> Unit = {},
-    background: Color = Color.Transparent,
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        modifier = Modifier.then(modifier),
-        shape = RoundedCornerShape(8.dp),
-        color = background,
-        tonalElevation = 4.dp
+    Column(
+        modifier = Modifier.then(modifier)
     ) {
-        Column {
-            this.title()
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
+        this.title()
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+        ) {
+            //var values
+            val animationProgress = remember { Animatable(0f) }
+            LaunchedEffect(datos) {
+                animationProgress.animateTo(1f, animationSpec = tween(durationMillis = 2000))
+            }
+            val textMeasurer = rememberTextMeasurer()
+            val styleText = MaterialTheme.typography.bodySmall
+            val density = LocalDensity.current
+            Canvas(
+                modifier = Modifier.fillMaxSize().padding(8.dp)
             ) {
-                //var values
-                val animationProgress = remember { Animatable(0f) }
-                LaunchedEffect(datos) {
-                    animationProgress.animateTo(1f, animationSpec = tween(durationMillis = 2000))
-                }
-                val textMeasurer = rememberTextMeasurer()
-                val styleText = MaterialTheme.typography.bodySmall
-                val density = LocalDensity.current
-                Canvas(modifier = Modifier.fillMaxSize()) {
-                    val listColor = listOf<Color>()
-                    val total = datos.map { it.value }.sum()
-                    var startAngle = -90f
+                val listColor = listOf<Color>()
+                val total = datos.map { it.value }.sum()
+                var startAngle = -90f
 
-                    datos.forEachIndexed { index, model ->
-                        val sweepAngle = (model.value / total) * 360 * animationProgress.value
+                datos.forEachIndexed { index, model ->
+                    val sweepAngle = (model.value / total) * 360 * animationProgress.value
 
-                        //Draw Value circle
-                        drawArc(
-                            color = model.color ?: Color.Gray,
-                            startAngle = startAngle,
-                            sweepAngle = sweepAngle,
-                            useCenter = true,
-                            topLeft = Offset(
-                                center.x - size.minDimension / 2,
-                                center.y - size.minDimension / 2
-                            ),
-                            size = Size(size.minDimension, size.minDimension),
-                            //  style = Stroke(width = 50f) // Change the width as needed
-                        )
+                    //Draw Value circle
+                    drawArc(
+                        color = model.color ?: Color.Gray,
+                        startAngle = startAngle,
+                        sweepAngle = sweepAngle,
+                        useCenter = true,
+                        topLeft = Offset(
+                            center.x - size.minDimension / 2,
+                            center.y - size.minDimension / 2
+                        ),
+                        size = Size(size.minDimension, size.minDimension),
+                        //  style = Stroke(width = 50f) // Change the width as needed
+                    )
 
-                        //Draw text
-                        // Calcula la posición del texto
-                        val angle = (startAngle + sweepAngle / 2) * PI / 180
-                        val radius = size.minDimension / 3
-                        val x = center.x + (cos(angle) * radius).toFloat()
-                        val y = center.y + (sin(angle) * radius).toFloat()
+                    //Draw text
+                    // Calcula la posición del texto
+                    val angle = (startAngle + sweepAngle / 2) * PI / 180
+                    val radius = size.minDimension / 3
+                    val x = center.x + (cos(angle) * radius).toFloat()
+                    val y = center.y + (sin(angle) * radius).toFloat()
 
-                        // Validate % of te char
-                        if (sweepAngle > 25) {
-                            drawIntoCanvas { canvas ->
-                                val scaledFontSize = with(density) { 16.sp.toPx() }
-                                val paint = Paint().asFrameworkPaint().apply {
-                                    color = Color.Black.toArgb()
-                                    textAlign = android.graphics.Paint.Align.CENTER
-                                    textSize = scaledFontSize
-                                    // typeface = android.graphics.Typeface.create(font, android.graphics.Typeface.NORMAL)
-                                }
-                                canvas.nativeCanvas.drawText(model.label, x, y, paint)
+                    // Validate % of te char
+                    if (sweepAngle > 25) {
+                        drawIntoCanvas { canvas ->
+                            val scaledFontSize = with(density) { 16.sp.toPx() }
+                            val paint = Paint().asFrameworkPaint().apply {
+                                color = Color.Black.toArgb()
+                                textAlign = android.graphics.Paint.Align.CENTER
+                                textSize = scaledFontSize
+                                // typeface = android.graphics.Typeface.create(font, android.graphics.Typeface.NORMAL)
                             }
-
+                            canvas.nativeCanvas.drawText(model.label, x, y, paint)
                         }
-                        startAngle += sweepAngle
+
                     }
+                    startAngle += sweepAngle
                 }
             }
         }
     }
+
 }
 
 
