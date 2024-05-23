@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -15,6 +16,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
@@ -36,6 +38,7 @@ import com.ssepulveda.presentation_common.ui.DialogController
 import com.ssepulveda.presentation_home.home.ui.GraphicsSection
 import com.ssepulveda.presentation_home.home.ui.HeaderSection
 import com.ssepulveda.presentation_home.home.ui.ItemBill
+import com.ssepulveda.presentation_menu.Menu
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -78,7 +81,9 @@ private fun Home(viewModel: HomeViewModel, homeModel: HomeModel?) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet { Text(text = "Menu") }
+            ModalDrawerSheet(
+                modifier = Modifier.width(230.dp)
+            ) { Menu() }
         },
     ) {
         Scaffold(
@@ -123,7 +128,7 @@ private fun Home(viewModel: HomeViewModel, homeModel: HomeModel?) {
                         Spacer(modifier = Modifier.padding(4.dp))
                         HeaderSection(homeModel)
                         Spacer(modifier = Modifier.padding(4.dp))
-                        Divider(
+                        HorizontalDivider(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             color = MaterialTheme.colorScheme.inversePrimary, thickness = 0.5.dp
                         )
@@ -132,9 +137,10 @@ private fun Home(viewModel: HomeViewModel, homeModel: HomeModel?) {
 
                         Spacer(modifier = Modifier.padding(8.dp))
 
-                        Divider(
+                        HorizontalDivider(
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            color = MaterialTheme.colorScheme.inversePrimary, thickness = 0.5.dp
+                            color = MaterialTheme.colorScheme.inversePrimary,
+                            thickness = 0.5.dp
                         )
                         Text(
                             text = "Lista de gastos",

@@ -8,7 +8,7 @@ espressoCore = "3.5.1"
 kotlinxCoroutinesAndroid = "1.7.1"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.7.0"
-composeBom = "2023.08.00"
+composeBom = "2024.05.00"
 roomVersion = "2.6.1"
 hiltVersion = "2.51.1"
 appcompat = "1.6.1"
@@ -24,6 +24,7 @@ hiltVavigationComposeVersion = "1.0.0"
 chartsVersion = "0.2.4-alpha"
 uiTextGoogleFonts = "1.6.7"
 firebaseVersion = "32.8.0"
+uiTooling = "1.6.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -71,6 +72,7 @@ androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseVersion" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

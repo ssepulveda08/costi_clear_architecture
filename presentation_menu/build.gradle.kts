@@ -1,11 +1,10 @@
 plugins {
-    kotlin("kapt")
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
 
 android {
-    namespace = "com.ssepulveda.presentation_home"
+    namespace = "com.ssepulveda.presentation_menu"
     compileSdk = 34
 
     defaultConfig {
@@ -31,27 +30,22 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
-
 }
 
 dependencies {
 
-    implementation(project(":presentation_common"))
-    implementation(project(":domain"))
-    implementation(project(":data"))
-    implementation(project(":presentation_menu"))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     // Compose
     implementation(libs.androidx.activity.compose)
@@ -60,25 +54,5 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
-    debugImplementation(libs.androidx.ui.tooling)
-
-    // Chart
-    //implementation(libs.charts)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    implementation(project(":modal_dialogs"))
-    kapt(libs.hilt.compiler)
-
-    // Navigation Compose
-    implementation(libs.navigation.compose)
-    implementation(libs.hilt.navigation.compose)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-}
-
-kapt {
-    correctErrorTypes = true
+    debugImplementation(libs.ui.tooling)
 }
