@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,8 +24,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ssepulveda.presentation_home.R
 
 private const val PADDING_CHART = 5
 private const val PADDING_VERTICAL_AND_HORIZONTAL = 100
@@ -33,8 +36,8 @@ private const val PADDING_VERTICAL = 60f
 @Composable
 fun BarChart(
     list: List<Bar>,
-    title: @Composable ColumnScope.() -> Unit = {},
     modifier: Modifier = Modifier,
+    title: @Composable ColumnScope.() -> Unit = {},
 ) {
     val context = LocalContext.current
     val textMeasurer = rememberTextMeasurer()
@@ -50,7 +53,8 @@ fun BarChart(
             modifier = Modifier
                 .fillMaxSize()
                 .fillMaxHeight()
-                .padding(horizontal = 8.dp).padding(bottom = 16.dp, top = 4.dp)
+                .padding(horizontal = 8.dp)
+                .padding(bottom = 16.dp, top = 4.dp)
         ) {
 
             val maxDataValue = list.maxByOrNull { it.value }?.value ?: 0f
@@ -135,6 +139,19 @@ fun BarChart(
             }
         }
     }
+}
+
+@Composable
+@Preview
+private fun PreviewBarChart() {
+   MaterialTheme {
+       BarChart(list =
+           listOf(Bar(
+               R.string.copy_friday,
+               855f,
+           ))
+       )
+   }
 }
 
 private fun Int.converterText(): String {

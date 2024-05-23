@@ -114,7 +114,6 @@ private fun RandomCircularIcon(modifier: Modifier = Modifier) {
     }
 }
 
-
 @Preview
 @Composable
 private fun PreviewItemBill() {

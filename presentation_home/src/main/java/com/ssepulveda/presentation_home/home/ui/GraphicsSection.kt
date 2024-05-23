@@ -32,7 +32,6 @@ fun GraphicsSection(homeModel: HomeModel?) {
     Surface(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         shape = RoundedCornerShape(8.dp),
-        // color = background,
         tonalElevation = 4.dp
     ) {
 
