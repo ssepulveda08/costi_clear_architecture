@@ -8,4 +8,6 @@
     <string name="copy_saturday">Sábado</string>
     <string name="copy_sunday">Domingo</string>
     <string name="copy_no_data">Sin Datos</string>
+    <string name="copy_add_bill">Agregar Gasto</string>
+    <string name="copy_list_bills">Lista de gastos</string>
 </resources>

@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -57,19 +58,23 @@ fun Menu(
             )
             Spacer(modifier = Modifier.padding(8.dp))
             ItemMenu(
-                "Ver Meses"
+                stringResource(R.string.copy_see_menu)
             ) {
-                navController?.navigate(NavRoutes.Welcome.route)
+                navController?.navigate(NavRoutes.Months.route)
             }
             ItemMenu(
-                "Github"
+                stringResource(R.string.copy_github)//"Github"
             ) {
-
+                navController?.navigate(NavRoutes.WebView.routeForUrl(
+                    url = "GITHUB"
+                ))
             }
             ItemMenu(
-                "Invitame un cafe"
+                stringResource(R.string.copy_buy_me_coffee)
             ) {
-
+                navController?.navigate(NavRoutes.WebView.routeForUrl(
+                    url = "LINKEDIN"
+                ))
             }
         }
         FooterMenu(this@ConstraintLayout, footer)

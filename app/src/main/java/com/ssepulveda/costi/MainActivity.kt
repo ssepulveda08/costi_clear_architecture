@@ -14,12 +14,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ssepulveda.analytics.testCrash
 import com.ssepulveda.costi.splash.SplashScreen
 import com.ssepulveda.costi.splash.SplashViewModel
 import com.ssepulveda.presentation_add_bill.add.AddBillScreen
 import com.ssepulveda.presentation_add_bill.add.AddBillViewModel
 import com.ssepulveda.presentation_common.navigation.NavRoutes
+import com.ssepulveda.presentation_common.ui.CustomWebView
 import com.ssepulveda.presentation_common.ui.theme.AppTheme
 import com.ssepulveda.presentation_home.home.HomeScreen
 import com.ssepulveda.presentation_home.home.HomeViewModel
@@ -76,6 +76,13 @@ fun App(navController: androidx.navigation.NavHostController) {
             arguments = NavRoutes.Bills.arguments
         ) {
             // TODO ADD BILLS
+        }
+        composable(
+            route = NavRoutes.WebView.route,
+            arguments = NavRoutes.WebView.arguments
+        ) {
+            Log.d("POTATO", NavRoutes.WebView.fromEntry(it))
+            CustomWebView(url = NavRoutes.WebView.fromEntry(it), navController)
         }
         composable(
             route = NavRoutes.Bill_Add.route,

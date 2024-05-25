@@ -8,11 +8,14 @@ import androidx.navigation.navArgument
 private const val ROUTE_SPLASH = "splash"
 private const val ROUTE_WELCOME = "welcome"
 private const val ROUTE_HOME = "home"
+private const val ROUTE_MONTHS = "months"
 private const val ROUTE_BILL = "bill"
 private const val ROUTE_BILL_ADD = "bill/add"
 private const val ROUTE_BILLS = "bills"
 private const val ROUTE_BILLS_FOR_MONTH = "bills/%s"
+private const val ROUTE_WEB_VIEW = "webView/%s"
 private const val ARG_MONTH_ID = "monthId"
+private const val ARG_URL = "url"
 
 sealed class NavRoutes(
     val route: String,
@@ -24,6 +27,7 @@ sealed class NavRoutes(
     data object Home : NavRoutes(ROUTE_HOME)
 
     data object Welcome : NavRoutes(ROUTE_WELCOME)
+    data object Months : NavRoutes(ROUTE_MONTHS)
 
     data object Bill : NavRoutes(ROUTE_BILL)
 
@@ -41,6 +45,26 @@ sealed class NavRoutes(
         fun fromEntry(entry: NavBackStackEntry): MonthInput {
             return MonthInput(entry.arguments?.getLong(ARG_MONTH_ID) ?: 0L)
         }
+    }
+
+    data object WebView : NavRoutes(
+        route = String.format(ROUTE_WEB_VIEW, "{$ARG_URL}"),
+        arguments = listOf(navArgument(ARG_URL) {
+            type = NavType.StringType
+        })
+    ) {
+        fun routeForUrl(url: String) = String.format(ROUTE_WEB_VIEW, url)
+
+        fun fromEntry(entry: NavBackStackEntry): String {
+            return getUrl(entry.arguments?.getString(ARG_URL))
+        }
+
+        private fun getUrl(key: String?): String = when (key) {
+            "GITHUB" -> "https://github.com/ssepulveda08/costi_clear_architecture"
+            "LINKEDIN" -> "http://www.linkedin.com/in/santiagosepulvedadev"
+            else -> ""
+        }
+
     }
 
 }
