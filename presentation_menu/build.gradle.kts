@@ -40,12 +40,11 @@ android {
 
 dependencies {
 
+    implementation(project(":presentation_common"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 
     // Compose
     implementation(libs.androidx.activity.compose)
@@ -54,5 +53,15 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.constraintlayout.compose)
+
+
+    // Navigation Compose
+    implementation(libs.navigation.compose)
+    implementation(libs.hilt.navigation.compose)
+
     debugImplementation(libs.ui.tooling)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

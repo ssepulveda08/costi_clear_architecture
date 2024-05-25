@@ -109,11 +109,23 @@ class HomeViewModel @Inject constructor(
         )
     }
 
+    private fun showDialogOpenMonth() {
+        submitDialog(Dialog.DialogDefault(
+            "Aviso Importante",
+            "Esta a punto de cerrar el mes [Mes], una vez realices esta accion no podrar agregas mas gastos a este mes",
+            textCancel = "Cancelar",
+            textSuccess = "Continuar",
+            onCancel = { hideDialog() },
+            onSuccess = { updateMonth() }
+        ))
+    }
+
     override fun handleAction(action: HomeUiAction) {
         when (action) {
             is HomeUiAction.Load -> loadData()
             is HomeUiAction.DeleteBill -> showDeletionConfirmation(action.bill)
             is HomeUiAction.UpdateMonth -> updateMonth()
+            is HomeUiAction.OpenDialogCloseMonth -> showDialogOpenMonth()
         }
     }
 

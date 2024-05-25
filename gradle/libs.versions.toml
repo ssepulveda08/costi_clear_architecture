@@ -25,6 +25,7 @@ chartsVersion = "0.2.4-alpha"
 uiTextGoogleFonts = "1.6.7"
 firebaseVersion = "32.8.0"
 uiTooling = "1.6.7"
+constraintlayoutComposeVersion = "1.1.0-alpha13"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,8 +44,10 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayoutComposeVersion" }
 
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+
 
 #ROOM
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }

@@ -53,7 +53,7 @@ fun HomeScreen(
     }
     viewModel.uiStateFlow.collectAsState().value.let { state ->
         CommonScreen(state = state) {
-            Home(viewModel, it)
+            Home(viewModel, it, navController)
         }
     }
 
@@ -75,7 +75,11 @@ fun HomeScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Home(viewModel: HomeViewModel, homeModel: HomeModel?) {
+private fun Home(
+    viewModel: HomeViewModel,
+    homeModel: HomeModel?,
+    navController: NavHostController,
+) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     ModalNavigationDrawer(
@@ -83,7 +87,7 @@ private fun Home(viewModel: HomeViewModel, homeModel: HomeModel?) {
         drawerContent = {
             ModalDrawerSheet(
                 modifier = Modifier.width(230.dp)
-            ) { Menu() }
+            ) { Menu(navController) }
         },
     ) {
         Scaffold(
@@ -95,6 +99,9 @@ private fun Home(viewModel: HomeViewModel, homeModel: HomeModel?) {
                                 if (isClosed) open() else close()
                             }
                         }
+                    },
+                    openOptions = {
+                        viewModel.submitAction(HomeUiAction.OpenDialogCloseMonth)
                     }
                 )
             },

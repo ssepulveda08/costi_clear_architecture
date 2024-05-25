@@ -2,15 +2,14 @@ package com.ssepulveda.presentation_menu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -25,32 +24,57 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavHostController
+import com.ssepulveda.presentation_common.navigation.NavRoutes
 
 @Composable
-fun Menu() {
-    Column(
-      //  modifier = Modifier.width(200.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.padding(32.dp))
-        ImageProfile()
-        Spacer(modifier = Modifier.padding(8.dp))
-        HorizontalDivider(
-            thickness = 0.5.dp,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.inversePrimary
-        )
-        Spacer(modifier = Modifier.padding(8.dp))
-        ItemMenu(
-            "Item del menu"
-        )
-        ItemMenu(
-            "Item del menu"
-        )
-        ItemMenu(
-            "Item del menu"
-        )
+fun Menu(
+    navController: NavHostController?,
+) {
+
+    ConstraintLayout {
+        val (body, footer) = createRefs()
+
+        Column(
+            modifier = Modifier.constrainAs(body) {
+                top.linkTo(parent.top, margin = 8.dp)
+                bottom.linkTo(footer.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                height = Dimension.matchParent
+            },
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.padding(32.dp))
+            ImageProfile()
+            Spacer(modifier = Modifier.padding(8.dp))
+            HorizontalDivider(
+                thickness = 0.5.dp,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                color = MaterialTheme.colorScheme.inversePrimary
+            )
+            Spacer(modifier = Modifier.padding(8.dp))
+            ItemMenu(
+                "Ver Meses"
+            ) {
+                navController?.navigate(NavRoutes.Welcome.route)
+            }
+            ItemMenu(
+                "Github"
+            ) {
+
+            }
+            ItemMenu(
+                "Invitame un cafe"
+            ) {
+
+            }
+        }
+        FooterMenu(this@ConstraintLayout, footer)
     }
+
 }
 
 @Composable
@@ -63,7 +87,7 @@ private fun ImageProfile() {
             modifier = Modifier
                 .padding(2.dp)
                 .background(
-                    color = Color.Transparent,
+                    color = MaterialTheme.colorScheme.secondary,
                     shape = CircleShape
                 )
                 .border(
@@ -79,7 +103,7 @@ private fun ImageProfile() {
                     .size(90.dp),
                 imageVector = Icons.Filled.Person,
                 contentDescription = "Localized description",
-                tint = MaterialTheme.colorScheme.secondary
+                tint = Color.White
             )
         }
         Box(
@@ -87,10 +111,20 @@ private fun ImageProfile() {
             contentAlignment = Alignment.BottomEnd
         ) {
             Icon(
-                modifier = Modifier.size(30.dp),
+                modifier = Modifier
+                    .size(30.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = CircleShape
+                    )
+                    .border(
+                        1.dp,
+                        color = Color.Black, shape = CircleShape
+                    )
+                    .padding(4.dp),
                 imageVector = Icons.Filled.Settings,
                 contentDescription = "Localized description",
-                tint = MaterialTheme.colorScheme.secondary
+                tint = Color.White
             )
         }
     }
@@ -99,29 +133,35 @@ private fun ImageProfile() {
 @Composable
 private fun ItemMenu(
     name: String,
-    // ADD RUTA
+    onclick: () -> Unit
 ) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 8.dp)
             .padding(top = 8.dp)
+            .clickable {
+                onclick.invoke()
+            }
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 4.dp),
-            text = name
+            text = name,
+            style = MaterialTheme.typography.labelMedium,
         )
         HorizontalDivider(
             modifier = Modifier.padding(top = 8.dp),
-            thickness = 0.2.dp,
+            thickness = 0.3.dp,
             color = MaterialTheme.colorScheme.inversePrimary
         )
     }
 }
 
 @Preview(
-    widthDp = 250
+    showSystemUi = true,
 )
 @Composable
 private fun PreviewMenu() {
-    Menu()
+    MaterialTheme {
+        Menu(null)
+    }
 }
