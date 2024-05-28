@@ -3,11 +3,14 @@ package com.ssepulveda.presentation_menu
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -23,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -37,7 +41,6 @@ fun Menu(
 
     ConstraintLayout {
         val (body, footer) = createRefs()
-
         Column(
             modifier = Modifier.constrainAs(body) {
                 top.linkTo(parent.top, margin = 8.dp)
@@ -63,18 +66,22 @@ fun Menu(
                 navController?.navigate(NavRoutes.Months.route)
             }
             ItemMenu(
-                stringResource(R.string.copy_github)//"Github"
+                stringResource(R.string.copy_github)
             ) {
-                navController?.navigate(NavRoutes.WebView.routeForUrl(
-                    url = "GITHUB"
-                ))
+                navController?.navigate(
+                    NavRoutes.WebView.routeForUrl(
+                        url = "GITHUB"
+                    )
+                )
             }
             ItemMenu(
                 stringResource(R.string.copy_buy_me_coffee)
             ) {
-                navController?.navigate(NavRoutes.WebView.routeForUrl(
-                    url = "LINKEDIN"
-                ))
+                navController?.navigate(
+                    NavRoutes.WebView.routeForUrl(
+                        url = "LINKEDIN"
+                    )
+                )
             }
         }
         FooterMenu(this@ConstraintLayout, footer)
@@ -142,16 +149,19 @@ private fun ItemMenu(
 ) {
     Column(
         modifier = Modifier
+            .height(40.dp)
             .padding(horizontal = 8.dp)
-            .padding(top = 8.dp)
             .clickable {
                 onclick.invoke()
             }
+            .padding(top = 8.dp),
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 4.dp),
             text = name,
             style = MaterialTheme.typography.labelMedium,
+            textAlign = TextAlign.Center
         )
         HorizontalDivider(
             modifier = Modifier.padding(top = 8.dp),
@@ -168,5 +178,15 @@ private fun ItemMenu(
 private fun PreviewMenu() {
     MaterialTheme {
         Menu(null)
+    }
+}
+
+@Preview(
+    showSystemUi = true,
+)
+@Composable
+private fun PreviewItem() {
+    MaterialTheme {
+        ItemMenu("null") {}
     }
 }

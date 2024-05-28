@@ -23,6 +23,7 @@ import com.ssepulveda.presentation_common.ui.CustomWebView
 import com.ssepulveda.presentation_common.ui.theme.AppTheme
 import com.ssepulveda.presentation_home.home.HomeScreen
 import com.ssepulveda.presentation_home.home.HomeViewModel
+import com.ssepulveda.presentation_report.ui.ReportScreen
 import com.ssepulveda.presentation_welcome.welcome.WelcomeScreen
 import com.ssepulveda.presentation_welcome.welcome.WelcomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -90,6 +91,12 @@ fun App(navController: androidx.navigation.NavHostController) {
         ) {
             val viewModel = hiltViewModel<AddBillViewModel>()
             AddBillScreen(viewModel, navController)
+        }
+        composable(
+            route = NavRoutes.Months.route,
+            arguments = NavRoutes.Months.arguments
+        ) {
+            ReportScreen(navController)
         }
     }
 }

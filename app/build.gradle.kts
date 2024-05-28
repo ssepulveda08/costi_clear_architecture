@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":presentation_welcome"))
     implementation(project(":presentation_home"))
     implementation(project(":presentation_add_bill"))
+    implementation(project(":presentation_report"))
     implementation(project(":analytics"))
 
     implementation(libs.androidx.core.ktx)
