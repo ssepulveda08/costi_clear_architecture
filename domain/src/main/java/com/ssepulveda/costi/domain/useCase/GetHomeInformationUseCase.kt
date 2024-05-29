@@ -25,7 +25,6 @@ class GetHomeInformationUseCase(
     override fun process(request: Request): Flow<Response> =
         localConfigurationRepository.getMonthSet().flatMapConcat { idMonth ->
             localBillRepository.getAllBillsByMonth(idMonth).map {
-                Log.d("POTATO", "MES ID $idMonth")
                 HomeScreen(
                     idMonth,
                     0.0,

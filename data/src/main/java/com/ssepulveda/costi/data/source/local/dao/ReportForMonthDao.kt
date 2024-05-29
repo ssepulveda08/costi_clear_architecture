@@ -2,6 +2,7 @@ package com.ssepulveda.costi.data.source.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.ssepulveda.costi.data.source.local.entities.ReportForMonth
 import com.ssepulveda.costi.data.source.local.entities.ReportForWeek
 import com.ssepulveda.costi.data.source.local.entities.ReportTotalForType
 import kotlinx.coroutines.flow.Flow
@@ -25,6 +26,17 @@ interface ReportForMonthDao {
             "GROUP BY dayOfWeek\n" +
             "ORDER BY dayOfWeek")
     fun getReportForWeek(month: Int) : Flow<List<ReportForWeek>>
+
+    @Query("SELECT \n" +
+            "    month,\n" +
+            "    SUM(value) as total\n" +
+            "FROM \n" +
+            "    BillEntity\n" +
+            "GROUP BY \n" +
+            "    month\n" +
+            "ORDER BY \n" +
+            "   month")
+    fun getReportForMonth() : Flow<List<ReportForMonth>>
 
     @Query("SELECT SUM(value)  FROM BillEntity WHERE  month = :month")
     fun getTotalByMonth(month: Int): Flow<Double?>

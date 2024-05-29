@@ -1,6 +1,5 @@
 package com.ssepulveda.presentation_welcome.welcome
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.data.getDefaultData
 import com.ssepulveda.costi.domain.entity.Result

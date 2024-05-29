@@ -1,6 +1,5 @@
 package com.ssepulveda.presentation_add_bill.add
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.domain.entity.Bill
 import com.ssepulveda.costi.domain.entity.Result

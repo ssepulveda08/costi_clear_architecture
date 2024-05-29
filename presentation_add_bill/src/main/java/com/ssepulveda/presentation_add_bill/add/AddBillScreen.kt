@@ -144,7 +144,11 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
                 value = value,
                 onValueChange = { newValue ->
                     newValue.replace(",", ".")
-                    viewModel.setValue(newValue.trim())
+                    if (newValue.toDoubleOrNull() != null) {
+                        viewModel.setValue(newValue.trim())
+                    } else {
+                        viewModel.setValue("")
+                    }
                 },
                 visualTransformation = MoneyVisualTransformation,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

@@ -1,25 +1,17 @@
 package com.ssepulveda.presentation_home.home
 
-import android.util.Log
-import androidx.compose.ui.graphics.Color
 import com.ssepulveda.costi.data.source.getDefaultMonths
 import com.ssepulveda.costi.domain.entity.CurrentWeekReport
-import com.ssepulveda.costi.domain.entity.Result
 import com.ssepulveda.costi.domain.useCase.GetHomeInformationUseCase
 import com.ssepulveda.presentation_common.state.CommonResultConverter
-import com.ssepulveda.presentation_common.state.UiState
-import com.ssepulveda.presentation_common.ui.generateColorRandom
 import com.ssepulveda.presentation_common.ui.getCurrentDate
 import com.ssepulveda.presentation_common.ui.getListColor
 import com.ssepulveda.presentation_home.R
 import com.ssepulveda.presentation_home.home.ui.charts.Bar
 import com.ssepulveda.presentation_home.home.ui.charts.CircleChart
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
-import kotlin.random.Random
 
 class HomerResultConverter @Inject constructor() :
     CommonResultConverter<GetHomeInformationUseCase.Response, HomeModel>() {
@@ -27,7 +19,6 @@ class HomerResultConverter @Inject constructor() :
     override fun convertSuccess(data: GetHomeInformationUseCase.Response): HomeModel {
         val month = getDefaultMonths()[data.model.idMonth - 1]
         val response = data.model
-        Log.d("POTATO", "RESPONSE $response")
         val bills = data.model.bills.map {
             BillModel(
                 it.id ?: 0,

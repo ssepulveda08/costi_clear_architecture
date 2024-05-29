@@ -4,6 +4,7 @@ import com.ssepulveda.costi.data.source.local.dao.ReportForMonthDao
 import com.ssepulveda.costi.data.source.local.entities.ReportTotalForType
 import com.ssepulveda.costi.domain.entity.CurrentWeekReport
 import com.ssepulveda.costi.domain.entity.ReportForMonth
+import com.ssepulveda.costi.domain.entity.ReportMonth
 import com.ssepulveda.costi.domain.entity.TotalValueByType
 import com.ssepulveda.costi.domain.repository.LocalReportForMonthRepository
 import kotlinx.coroutines.flow.Flow
@@ -37,6 +38,9 @@ class LocalReportForMonthRepositoryImpl(
             }
         }
 
+    override fun getReportMonths(): Flow<List<ReportMonth>> = reportForMonthDao.getReportForMonth().map { list ->
+        list.map { ReportMonth(it.month, it.total) }
+    }
 
 }
 

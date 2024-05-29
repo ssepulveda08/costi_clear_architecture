@@ -2,6 +2,7 @@ package com.ssepulveda.presentation_home.home
 
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.domain.entity.Bill
+import com.ssepulveda.costi.domain.entity.Month
 import com.ssepulveda.costi.domain.useCase.DeleteBillUseCase
 import com.ssepulveda.costi.domain.useCase.GetHomeInformationUseCase
 import com.ssepulveda.costi.domain.useCase.SaveCurrentMonthUseCase
@@ -44,7 +45,7 @@ class HomeViewModel @Inject constructor(
                 textCancel = stringResolve.getString(R.string.copy_close),
                 textSuccess = stringResolve.getString(R.string.copy_continue),
                 onCancel = { hideDialog() },
-                onSuccess = { updateMonth() }
+                onSuccess = { updateMonth(getCurrentMonth()) }
             ))
         }
     }
@@ -86,11 +87,11 @@ class HomeViewModel @Inject constructor(
         loadData()
     }
 
-    private fun updateMonth() {
+    private fun updateMonth(month: Int) {
         hideDialog()
         submitState(UiState.Loading)
         viewModelScope.launch {
-            saveCurrentMonthUseCase.execute(SaveCurrentMonthUseCase.Request(getCurrentMonth()))
+            saveCurrentMonthUseCase.execute(SaveCurrentMonthUseCase.Request(month))
                 .collect {
                     loadData()
                 }
@@ -122,7 +123,7 @@ class HomeViewModel @Inject constructor(
             textCancel = stringResolve.getString(R.string.copy_cancel),
             textSuccess = stringResolve.getString(R.string.copy_continue),
             onCancel = { hideDialog() },
-            onSuccess = { updateMonth() }
+            onSuccess = { updateMonth(getCurrentMonth()+1) }
         ))
     }
 
@@ -130,7 +131,7 @@ class HomeViewModel @Inject constructor(
         when (action) {
             is HomeUiAction.Load -> loadData()
             is HomeUiAction.DeleteBill -> showDeletionConfirmation(action.bill)
-            is HomeUiAction.UpdateMonth -> updateMonth()
+            is HomeUiAction.UpdateMonth -> updateMonth(getCurrentMonth())
             is HomeUiAction.OpenDialogCloseMonth -> showDialogCloseMonth()
         }
     }

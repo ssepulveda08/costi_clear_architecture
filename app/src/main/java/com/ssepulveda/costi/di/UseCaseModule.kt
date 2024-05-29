@@ -12,6 +12,7 @@ import com.ssepulveda.costi.domain.useCase.GetCostTypeWithSubTypeUseCase
 import com.ssepulveda.costi.domain.useCase.GetCurrentMonthUseCase
 import com.ssepulveda.costi.domain.useCase.GetHomeInformationUseCase
 import com.ssepulveda.costi.domain.useCase.GetInitialConfigurationUseCase
+import com.ssepulveda.costi.domain.useCase.GetReportMonthsUseCase
 import com.ssepulveda.costi.domain.useCase.GetTypesAndSubTypesUseCase
 import com.ssepulveda.costi.domain.useCase.SaveBillUseCase
 import com.ssepulveda.costi.domain.useCase.SaveCurrentMonthUseCase

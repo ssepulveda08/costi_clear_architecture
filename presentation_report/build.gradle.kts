@@ -1,4 +1,5 @@
 plugins {
+    kotlin("kapt")
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
@@ -39,6 +40,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":presentation_common"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -57,8 +61,20 @@ dependencies {
     // Navigation Compose
     implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
+    implementation(project(":presentation_common"))
+    implementation(project(":domain"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
+
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+}
+
+kapt {
+    correctErrorTypes = true
 }
