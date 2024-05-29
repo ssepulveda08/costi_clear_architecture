@@ -1,6 +1,7 @@
 package com.ssepulveda.modal_dialogs.entities
 
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -21,10 +22,16 @@ fun DialogTitleAndSubTitle(dialog: Dialog.DialogDefault) {
             // Icon(icon, contentDescription = "Example Icon")
         },
         title = {
-            Text(text = dialog.title)
+            Text(
+                text = dialog.title,
+                style = MaterialTheme.typography.titleMedium
+            )
         },
         text = {
-            Text(text = dialog.description)
+            Text(
+                text = dialog.description,
+                style = MaterialTheme.typography.bodyMedium
+            )
         },
         onDismissRequest = {
             dialog.onCancel.invoke()
@@ -36,7 +43,10 @@ fun DialogTitleAndSubTitle(dialog: Dialog.DialogDefault) {
                         dialog.onSuccess.invoke()
                     }
                 ) {
-                    Text(success)
+                    Text(
+                        success,
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
             }
         },
@@ -47,7 +57,10 @@ fun DialogTitleAndSubTitle(dialog: Dialog.DialogDefault) {
                         dialog.onCancel.invoke()
                     }
                 ) {
-                    Text(cancel)
+                    Text(
+                        cancel,
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
             }
         }

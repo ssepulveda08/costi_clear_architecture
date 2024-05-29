@@ -1,4 +1,5 @@
 plugins {
+    kotlin("kapt")
     id("com.android.library")
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
@@ -57,7 +58,15 @@ dependencies {
     implementation(project(":domain"))
     implementation(libs.androidx.ui.text.google.fonts)
 
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+kapt {
+    correctErrorTypes = true
 }

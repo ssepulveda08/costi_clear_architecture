@@ -10,4 +10,21 @@
     <string name="copy_no_data">Sin Datos</string>
     <string name="copy_add_bill">Agregar Gasto</string>
     <string name="copy_list_bills">Lista de gastos</string>
+    <string name="copy_detail_of_expenses">Detalle de gastos</string>
+    <string name="copy_total">Total: %1$s</string>
+    <string name="copy_max">Mínimo: %1$s</string>
+    <string name="copy_min">Máximo: %1$s</string>
+    <string name="title_update_month">Actualizacion de datos</string>
+    <string name="title_detele_bill">Confirmar acción</string>
+    <string name="description_update_month">El mes ha cambiado. Si deseas actualizar la selección del mes, presiona \'Continuar\'. Si prefieres permanecer en el mes actual, simplemente cierra este mensaje</string>
+    <string name="copy_close">Cerrar</string>
+    <string name="copy_continue">Continuar</string>
+    <string name="title_successful_process">¡Proceso Exitoso!</string>
+    <string name="description_delete_bill">El gasto se ha eliminado correctamente</string>
+    <string name="copy_ok">OK</string>
+    <string name="title_detele_description">¿Estás seguro de que deseas eliminar el gasto: %1$s? Una vez eliminado, no podrás revertir los cambios.\"</string>
+    <string name="copy_delete">Eliminar</string>
+    <string name="copy_cancel">Cancelar</string>
+    <string name="title_close_month">Aviso Importante</string>
+    <string name="description_close_month">Estás a punto de cerrar el mes Actual.\\nUna vez que realices esta acción, no podrás agregar más gastos a este mes.</string>
 </resources>

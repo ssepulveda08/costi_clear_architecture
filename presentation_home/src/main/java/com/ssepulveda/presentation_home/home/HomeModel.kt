@@ -14,6 +14,7 @@ data class HomeModel(
     val bills: List<BillModel>,
     val reportForType: List<CircleChart> = listOf(),
     val reportForWeek: List<Bar> = listOf(),
+    val localCode: String = "COP",
 )
 
 data class BillModel(

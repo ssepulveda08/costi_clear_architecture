@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.ssepulveda.presentation_add_bill.R
 import com.ssepulveda.presentation_add_bill.ui.SingleToolbar
 import com.ssepulveda.presentation_add_bill.ui.SpinnerComponent
 import com.ssepulveda.presentation_common.state.CommonScreen
@@ -94,7 +96,7 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
 
             Spacer(modifier = Modifier.padding(8.dp))
             Text(
-                text = "Asignar nuevo gasto. Por favor, selecciona el tipo y subtipo correspondientes que mejor describan las características de este gasto.",
+                text = stringResource(R.string.copy_information_add_bill),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center
             )
@@ -105,7 +107,12 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
                 onValueChange = {
                     viewModel.setDescription(it)
                 },
-                label = { Text(text = "Descripcion") },
+                label = {
+                    Text(
+                        text = stringResource(R.string.label_description),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                },
                 textStyle = MaterialTheme.typography.bodyLarge,
                 shape = MaterialTheme.shapes.small,
                 colors = TextFieldDefaults.textFieldColors(
@@ -117,7 +124,7 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
             Spacer(modifier = Modifier.padding(8.dp))
             SpinnerComponent(
                 types,
-                label = "Typo de Gasto",
+                label = stringResource(R.string.label_type_bill),
                 selectedType
             ) {
                 selectedType = it
@@ -126,7 +133,7 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
             Spacer(modifier = Modifier.padding(8.dp))
             SpinnerComponent(
                 items = subTypes,
-                label = "Sub Typo de Gasto",
+                label = stringResource(R.string.label_subtype_bill),
                 subTypeSelected
             ) {
                 viewModel.submitAction(AddBillUiAction.SelectedSubType(it))
@@ -141,7 +148,12 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
                 },
                 visualTransformation = MoneyVisualTransformation,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                label = { Text(text = "Ingresa un valor") },
+                label = {
+                    Text(
+                        text = stringResource(R.string.label_value),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                },
                 textStyle = MaterialTheme.typography.bodyLarge,
                 shape = MaterialTheme.shapes.small,
                 colors = TextFieldDefaults.textFieldColors(
@@ -157,7 +169,11 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
                 },
                 enabled = enabledButton
             ) {
-                Text(text = "Registrar", modifier = Modifier.padding(start = 32.dp, end = 32.dp))
+                Text(
+                    text = stringResource(R.string.copy_register),
+                    modifier = Modifier.padding(start = 32.dp, end = 32.dp),
+                    style = MaterialTheme.typography.labelMedium
+                )
             }
         }
     }

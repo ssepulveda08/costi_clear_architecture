@@ -32,11 +32,16 @@ import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ssepulveda.presentation_common.ui.toCurrencyFormat
 import com.ssepulveda.presentation_home.home.BillModel
 import kotlin.random.Random
 
 @Composable
-fun ItemBill(billModel: BillModel, onDelete: (BillModel) -> Unit) {
+fun ItemBill(
+    billModel: BillModel,
+    localeCode: String,
+    onDelete: (BillModel) -> Unit
+) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -59,7 +64,7 @@ fun ItemBill(billModel: BillModel, onDelete: (BillModel) -> Unit) {
                 )
                 Spacer(modifier = Modifier.padding(2.dp))
                 Text(
-                    text = "$ ${billModel.value.toInt()}",
+                    text = billModel.value.toCurrencyFormat(localeCode),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                 )
@@ -127,7 +132,8 @@ private fun PreviewItemBill() {
                     1,
                     "nameType",
                     ""
-                )
+                ),
+                "COP"
             ) {
 
             }

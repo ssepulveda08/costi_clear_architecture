@@ -1,7 +1,9 @@
 package com.ssepulveda.presentation_common.ui
 
 import androidx.compose.ui.graphics.Color
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.Currency.getInstance
 import java.util.Date
 import java.util.Locale
 import kotlin.random.Random
@@ -43,3 +45,20 @@ fun Date.getCurrentDate(): String  {
     val formato = SimpleDateFormat("dd - MMM- yyyy", Locale.ENGLISH)
     return formato.format(this)
 }
+
+fun String.toCurrencyFormat(localeCode: String): String {
+    val amount = this.toDoubleOrNull() ?: return this
+
+    val formatter = DecimalFormat("#,###")
+    formatter.currency = getInstance(localeCode)
+
+    return formatter.currency?.currencyCode.orEmpty() + " " + formatter.format(amount)
+}
+
+fun Double.toCurrencyFormat(currencyCode: String): String {
+    val formatter = DecimalFormat("#,###")
+    formatter.currency = getInstance(currencyCode)
+    return formatter.currency?.currencyCode.orEmpty() + " " + formatter.format(this)
+}
+
+fun Double?.orZero() = this ?: 0.0

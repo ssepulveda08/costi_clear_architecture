@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="copy_information_add_bill">Asignar nuevo gasto. Por favor, selecciona el tipo y subtipo correspondientes que mejor describan las características de este gasto.</string>
+    <string name="label_description">Descripción</string>
+    <string name="label_type_bill">Typo de gasto</string>
+    <string name="label_subtype_bill">Subtype de gasto</string>
+    <string name="label_value">Ingresa un valor</string>
+    <string name="copy_register">Registrar</string>
+</resources>

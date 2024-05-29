@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="copy_welcome">¡Bienvenido!</string>
+    <string name="welcome_information">Con nuestra herramienta, podrás llevar un registro detallado de tus gastos y generar informes útiles para administrar mejor tus finanzas.</string>
+    <string name="welcome_ask">¿Listo para empezar a tomar el control de tus finanzas?</string>
+    <string name="welcome_go">¡Comienza configurando tus datos ahora mismo!</string>
+    <string name="copy_start">Comenzar</string>
+</resources>

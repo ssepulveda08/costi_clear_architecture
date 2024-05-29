@@ -8,6 +8,8 @@ import com.ssepulveda.costi.domain.useCase.SaveCurrentMonthUseCase
 import com.ssepulveda.modal_dialogs.entities.Dialog
 import com.ssepulveda.presentation_common.state.MviViewModel
 import com.ssepulveda.presentation_common.state.UiState
+import com.ssepulveda.presentation_common.ui.StringResolve
+import com.ssepulveda.presentation_home.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -19,7 +21,8 @@ class HomeViewModel @Inject constructor(
     private val getHomeInformationUseCase: GetHomeInformationUseCase,
     private val converter: HomerResultConverter,
     private val deleteBillUseCase: DeleteBillUseCase,
-    private val saveCurrentMonthUseCase: SaveCurrentMonthUseCase
+    private val saveCurrentMonthUseCase: SaveCurrentMonthUseCase,
+    private val stringResolve: StringResolve
 ) : MviViewModel<HomeModel, UiState<HomeModel>, HomeUiAction, HomeSingleEvent>() {
 
     private fun loadData() {
@@ -36,10 +39,10 @@ class HomeViewModel @Inject constructor(
     private fun validateCurrentMonth(uiState: UiState<HomeModel>) {
         if (uiState is UiState.Success && uiState.data.isCurrentMonthHigher) {
             submitDialog(Dialog.DialogDefault(
-                "Aviso Importante",
-                "Actualmente el mes ya cambio, si quieres actualizar el mes seleccionado oprime continuar, si queires continuar en el mes $[mens] cierra el dialogo",
-                textCancel = "Cerrar",
-                textSuccess = "Actualizar",
+                stringResolve.getString(R.string.title_update_month),
+                stringResolve.getString(R.string.description_update_month),
+                textCancel = stringResolve.getString(R.string.copy_close),
+                textSuccess = stringResolve.getString(R.string.copy_continue),
                 onCancel = { hideDialog() },
                 onSuccess = { updateMonth() }
             ))
@@ -67,9 +70,9 @@ class HomeViewModel @Inject constructor(
             ).collect {
                 submitDialog(
                     Dialog.DialogDefault(
-                        title = "Proceso Exitoso!",
-                        description = "Se elimino Correctamente el Item",
-                        textSuccess = "OK",
+                        title = stringResolve.getString(R.string.title_successful_process),
+                        description = stringResolve.getString(R.string.description_delete_bill),
+                        textSuccess = stringResolve.getString(R.string.copy_ok),
                         onSuccess = ::closeDialogDeletedBill,
                         onCancel = ::closeDialogDeletedBill
                     )
@@ -99,22 +102,25 @@ class HomeViewModel @Inject constructor(
     private fun showDeletionConfirmation(bill: BillModel) {
         submitDialog(
             Dialog.DialogDefault(
-                title = "Confirmar accion!",
-                description = "Esta seguro de eliminar el gasto: ${bill.description},\n\nUna vez eliminado no podra revertir los cambios",
-                textSuccess = "Eliminar",
-                textCancel = "Cancelar",
+                title = stringResolve.getString(R.string.title_detele_bill),
+                description = stringResolve.getString(
+                    R.string.title_detele_description,
+                    bill.description
+                ),
+                textSuccess = stringResolve.getString(R.string.copy_delete),
+                textCancel = stringResolve.getString(R.string.copy_cancel),
                 onSuccess = { deleteBill(bill) },
                 onCancel = { hideDialog() }
             )
         )
     }
 
-    private fun showDialogOpenMonth() {
+    private fun showDialogCloseMonth() {
         submitDialog(Dialog.DialogDefault(
-            "Aviso Importante",
-            "Esta a punto de cerrar el mes [Mes], una vez realices esta accion no podrar agregas mas gastos a este mes",
-            textCancel = "Cancelar",
-            textSuccess = "Continuar",
+            title = stringResolve.getString(R.string.title_close_month),
+            description = stringResolve.getString(R.string.description_close_month),
+            textCancel = stringResolve.getString(R.string.copy_cancel),
+            textSuccess = stringResolve.getString(R.string.copy_continue),
             onCancel = { hideDialog() },
             onSuccess = { updateMonth() }
         ))
@@ -125,7 +131,7 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.Load -> loadData()
             is HomeUiAction.DeleteBill -> showDeletionConfirmation(action.bill)
             is HomeUiAction.UpdateMonth -> updateMonth()
-            is HomeUiAction.OpenDialogCloseMonth -> showDialogOpenMonth()
+            is HomeUiAction.OpenDialogCloseMonth -> showDialogCloseMonth()
         }
     }
 

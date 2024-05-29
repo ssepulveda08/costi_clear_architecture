@@ -164,7 +164,7 @@ private fun Home(
 
                 }
                 items(homeModel?.bills ?: listOf()) {
-                    ItemBill(it) { model ->
+                    ItemBill(it, homeModel?.localCode ?: "COP") { model ->
                         viewModel.submitAction(HomeUiAction.DeleteBill(model))
                     }
                 }

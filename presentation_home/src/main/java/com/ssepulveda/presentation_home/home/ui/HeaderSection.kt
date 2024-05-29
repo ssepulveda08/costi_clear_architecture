@@ -19,6 +19,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ssepulveda.presentation_common.ui.orZero
+import com.ssepulveda.presentation_common.ui.toCurrencyFormat
 import com.ssepulveda.presentation_home.R
 import com.ssepulveda.presentation_home.home.HomeModel
 
@@ -60,7 +62,7 @@ fun HeaderSection(homeModel: HomeModel?) {
             ),
         ) {
             Text(
-                text = "Detalle de Gastos",
+                text = stringResource(R.string.copy_detail_of_expenses),
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .padding(top = 4.dp)
@@ -70,19 +72,33 @@ fun HeaderSection(homeModel: HomeModel?) {
             Column(
                 modifier = Modifier.padding(4.dp)
             ) {
+                val total = stringResource(
+                    R.string.copy_total, homeModel?.totalMonth.orZero()
+                        .toCurrencyFormat(homeModel?.localCode.orEmpty())
+                )
+                val max = stringResource(
+                    R.string.copy_max, homeModel?.maxValue.orZero()
+                        .toCurrencyFormat(homeModel?.localCode.orEmpty())
+                )
+                val min = stringResource(
+                    R.string.copy_min, homeModel?.minValue.orZero()
+                        .toCurrencyFormat(homeModel?.localCode.orEmpty())
+                )
                 Text(
-                    "Total: $${homeModel?.totalMonth?.toInt() ?: 0}",
+                    total,
                     modifier = Modifier.padding(horizontal = 4.dp),
                     style = MaterialTheme.typography.titleLarge,
                 )
 
                 Text(
-                    "Máximo: $${homeModel?.maxValue?.toInt() ?: 0}",
-                    modifier = Modifier.padding(horizontal = 6.dp).padding(top = 4.dp),
+                    max,
+                    modifier = Modifier
+                        .padding(horizontal = 6.dp)
+                        .padding(top = 4.dp),
                     style = MaterialTheme.typography.bodySmall,
                 )
                 Text(
-                    "Mínimo: $${homeModel?.minValue?.toInt() ?: 0}",
+                    min,
                     modifier = Modifier.padding(horizontal = 6.dp),
                     style = MaterialTheme.typography.bodySmall,
                 )
