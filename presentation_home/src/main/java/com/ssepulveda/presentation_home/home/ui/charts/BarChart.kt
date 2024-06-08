@@ -31,7 +31,7 @@ import com.ssepulveda.presentation_home.R
 
 private const val PADDING_CHART = 5
 private const val PADDING_VERTICAL_AND_HORIZONTAL = 100
-private const val PADDING_VERTICAL = 60f
+private const val PADDING_VERTICAL = 75f
 
 @Composable
 fun BarChart(
@@ -41,6 +41,9 @@ fun BarChart(
 ) {
     val context = LocalContext.current
     val textMeasurer = rememberTextMeasurer()
+    val newStyleLabel = MaterialTheme.typography.labelSmall.copy(
+        fontSize = 8.sp
+    )
     Column(
         modifier = Modifier.then(modifier)
     ) {
@@ -78,11 +81,7 @@ fun BarChart(
                 val labelValue = if (i == 0) 0 else valorUniLabelV * i
                 val textToDraw = labelValue.converterText()
 
-                val style = TextStyle(
-                    fontSize = 7.sp,
-                    color = Color.Black,
-                )
-                val newValue = textMeasurer.measure(textToDraw, style)
+                val newValue = textMeasurer.measure(textToDraw, newStyleLabel)
                 drawText(
                     newValue,
                     topLeft = Offset(
@@ -113,7 +112,6 @@ fun BarChart(
                 val startY = size.height - barHeight - (PADDING_CHART*2)
                 val startX = endPointInX - barWidth
 
-                //Log.d("POTATO", "SIZE $index - ${size.height} - x $startX - Y $startY - Barheight $barHeight - unitHeight $unitHeight value - ${bar.value}")
                 if (bar.value > 0) {
                     drawRect(
                         color = bar.color ?: Color.Gray,
@@ -122,13 +120,8 @@ fun BarChart(
                         //style = Stroke(width = 1.dp.toPx()),
                     )
                 }
-
-                val styleLabel = TextStyle(
-                    fontSize = 8.sp,
-                    color = Color.Black,
-                )
                 val textLabel = context.resources.getText(bar.label).toString()
-                val newValue = textMeasurer.measure(textLabel, styleLabel)
+                val newValue = textMeasurer.measure(textLabel, newStyleLabel)
                 drawText(
                     newValue,
                     topLeft = Offset(

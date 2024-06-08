@@ -8,9 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -32,7 +30,7 @@ import kotlin.math.sin
 
 @Composable
 fun PieChart(
-    datos: List<CircleChart>,
+    data: List<CircleChart>,
     title: @Composable ColumnScope.() -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -46,20 +44,19 @@ fun PieChart(
         ) {
             //var values
             val animationProgress = remember { Animatable(0f) }
-            LaunchedEffect(datos) {
+            LaunchedEffect(data) {
                 animationProgress.animateTo(1f, animationSpec = tween(durationMillis = 2000))
             }
-            val textMeasurer = rememberTextMeasurer()
-            val styleText = MaterialTheme.typography.bodySmall
             val density = LocalDensity.current
+            val textColor = MaterialTheme.colorScheme.onSurface.toArgb()
             Canvas(
                 modifier = Modifier.fillMaxSize().padding(8.dp)
             ) {
                 val listColor = listOf<Color>()
-                val total = datos.map { it.value }.sum()
+                val total = data.map { it.value }.sum()
                 var startAngle = -90f
 
-                datos.forEachIndexed { index, model ->
+                data.forEachIndexed { index, model ->
                     val sweepAngle = (model.value / total) * 360 * animationProgress.value
 
                     //Draw Value circle
@@ -91,9 +88,12 @@ fun PieChart(
                                 color = Color.Black.toArgb()
                                 textAlign = android.graphics.Paint.Align.CENTER
                                 textSize = scaledFontSize
-                                // typeface = android.graphics.Typeface.create(font, android.graphics.Typeface.NORMAL)
+                                //typeface = android.graphics.Typeface.create(font, android.graphics.Typeface.NORMAL)
                             }
+                            //val newValue = textLabelPie.measure(model.label, newStyleLabel)
+
                             canvas.nativeCanvas.drawText(model.label, x, y, paint)
+
                         }
 
                     }
