@@ -63,7 +63,7 @@ private fun getCurrentMonth(): Int {
 private fun getDataChartWeed(dataReportWeed: List<CurrentWeekReport>): List<Bar> {
     val defaultList = getDefaultListWeed()
     dataReportWeed.forEach { data ->
-        val index = if (data.dayOfWeek >= 1) data.dayOfWeek - 1 else data.dayOfWeek
+        val index = if (data.dayOfWeek >= 1) data.dayOfWeek - 1 else 6
         defaultList[index] = defaultList[index].copy(value = data.total.toFloat())
     }
     return defaultList.toList()

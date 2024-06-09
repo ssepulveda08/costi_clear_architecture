@@ -1,5 +1,7 @@
-package com.ssepulveda.presentation_report.ui
+package com.ssepulveda.presentation_report.ui.list
 
+import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,13 +23,17 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.ssepulveda.presentation_common.navigation.NavRoutes
 import com.ssepulveda.presentation_common.state.CommonScreen
-import com.ssepulveda.presentation_common.ui.DialogController
 import com.ssepulveda.presentation_common.ui.toCurrencyFormat
 import com.ssepulveda.presentation_report.R
 import kotlinx.coroutines.flow.collectLatest
@@ -88,14 +94,23 @@ private fun Report(
         ) {
             val localCode = model?.localCode ?: "Cop"
             items(model?.months ?: listOf()) {
-                ItemMonth(it, localCode)
+                ItemMonth(it, localCode) { month ->
+                    Log.d("POTATO", "Route ${NavRoutes.DetailMonth.routeForMonth(month)}")
+                    navController?.navigate(
+                        NavRoutes.DetailMonth.routeForMonth(month)
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun ItemMonth(monthData: MonthData, localCode: String) {
+private fun ItemMonth(
+    monthData: MonthData,
+    localCode: String,
+    onClick: (month: Int) -> Unit
+) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -103,14 +118,22 @@ private fun ItemMonth(monthData: MonthData, localCode: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
+            .clickable {
+                if (monthData.total > 0) {
+                    onClick.invoke(monthData.id)
+                }
+            }
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
+            var addMaxAndMin by remember { mutableStateOf(false) }
             Text(
                 text = monthData.label,
                 style = MaterialTheme.typography.titleLarge
             )
             val total = if (monthData.total > 0) {
-                monthData.total.toCurrencyFormat(localCode)
+                val value = monthData.total.toCurrencyFormat(localCode)
+                addMaxAndMin = true
+                stringResource(id = R.string.copy_total, value)
             } else {
                 stringResource(R.string.copy_no_record)
             }
@@ -118,6 +141,16 @@ private fun ItemMonth(monthData: MonthData, localCode: String) {
                 text = total,
                 style = MaterialTheme.typography.labelLarge
             )
+            if (addMaxAndMin) {
+                Text(
+                    text = stringResource(id = R.string.copy_max, monthData.maxValue),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                Text(
+                    text = stringResource(id = R.string.copy_min, monthData.maxValue),
+                    style = MaterialTheme.typography.labelMedium
+                )
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ class LocalReportForMonthRepositoryImpl(
 
     override fun getReportForMonth(month: Int): Flow<ReportForMonth> =
         reportForMonthDao.getTotalByMonth(month).flatMapConcat { totalMonth ->
-            reportForMonthDao.getReportForMonth(month).map {list ->
+            reportForMonthDao.getReportForMonth(month).map { list ->
                 ReportForMonth(
                     totalMonth ?: 0.0,
                     list.toReport()
@@ -28,9 +28,9 @@ class LocalReportForMonthRepositoryImpl(
     override fun getCurrentWeekReport(month: Int): Flow<List<CurrentWeekReport>> =
         reportForMonthDao.getTotalByMonth(month).flatMapConcat { totalMonth ->
             reportForMonthDao.getReportForWeek(month).map {
-                it.map { week->
+                it.map { week ->
                     CurrentWeekReport(
-                        week.dayOfWeek ?:0,
+                        week.dayOfWeek ?: 0,
                         week.data ?: "",
                         week.total ?: 0.0
                     )
@@ -38,13 +38,14 @@ class LocalReportForMonthRepositoryImpl(
             }
         }
 
-    override fun getReportMonths(): Flow<List<ReportMonth>> = reportForMonthDao.getReportForMonth().map { list ->
-        list.map { ReportMonth(it.month, it.total) }
-    }
+    override fun getReportMonths(): Flow<List<ReportMonth>> =
+        reportForMonthDao.getReportForMonth().map { list ->
+            list.map { ReportMonth(it.month, it.total, it.maxValue, it.minValue) }
+        }
 
 }
 
-private fun  List<ReportTotalForType>.toReport(): List<TotalValueByType> {
+private fun List<ReportTotalForType>.toReport(): List<TotalValueByType> {
     return this.map { report ->
         TotalValueByType(
             report.name.orEmpty(),

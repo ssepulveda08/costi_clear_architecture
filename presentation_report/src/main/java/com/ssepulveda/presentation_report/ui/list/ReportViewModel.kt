@@ -1,4 +1,4 @@
-package com.ssepulveda.presentation_report.ui
+package com.ssepulveda.presentation_report.ui.list
 
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.domain.useCase.GetReportMonthsUseCase

@@ -23,8 +23,9 @@ import com.ssepulveda.presentation_common.ui.CustomWebView
 import com.ssepulveda.presentation_common.ui.theme.AppTheme
 import com.ssepulveda.presentation_home.home.HomeScreen
 import com.ssepulveda.presentation_home.home.HomeViewModel
-import com.ssepulveda.presentation_report.ui.ReportScreen
-import com.ssepulveda.presentation_report.ui.ReportViewModel
+import com.ssepulveda.presentation_report.ui.list.ReportScreen
+import com.ssepulveda.presentation_report.ui.list.ReportViewModel
+import com.ssepulveda.presentation_report.ui.detail.MonthDetailScreen
 import com.ssepulveda.presentation_welcome.welcome.WelcomeScreen
 import com.ssepulveda.presentation_welcome.welcome.WelcomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -99,6 +100,15 @@ fun App(navController: androidx.navigation.NavHostController) {
         ) {
             val viewModel = hiltViewModel<ReportViewModel>()
             ReportScreen(viewModel, navController)
+        }
+        composable(
+            route = NavRoutes.DetailMonth.route,
+            arguments = NavRoutes.Months.arguments
+        ) {
+            //val viewModel = hiltViewModel<ReportViewModel>()
+            MonthDetailScreen(
+                NavRoutes.DetailMonth.fromEntry(it)
+            )//(viewModel, navController)
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.ssepulveda.presentation_report.ui
+package com.ssepulveda.presentation_report.ui.list
 
 import com.ssepulveda.presentation_common.state.UiSingleEvent
 

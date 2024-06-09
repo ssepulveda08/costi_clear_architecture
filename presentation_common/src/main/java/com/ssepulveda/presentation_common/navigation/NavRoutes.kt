@@ -4,6 +4,7 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.ssepulveda.costi.domain.entity.Month
 
 private const val ROUTE_SPLASH = "splash"
 private const val ROUTE_WELCOME = "welcome"
@@ -11,6 +12,7 @@ private const val ROUTE_HOME = "home"
 private const val ROUTE_MONTHS = "months"
 private const val ROUTE_BILL = "bill"
 private const val ROUTE_BILL_ADD = "bill/add"
+private const val ROUTE_MONTH_DETAIL= "month/%s"
 private const val ROUTE_BILLS = "bills"
 private const val ROUTE_BILLS_FOR_MONTH = "bills/%s"
 private const val ROUTE_WEB_VIEW = "webView/%s"
@@ -41,6 +43,20 @@ sealed class NavRoutes(
     ) {
 
         fun routeForPost(monthInput: MonthInput) = String.format(ROUTE_BILLS, monthInput.monthId)
+
+        fun fromEntry(entry: NavBackStackEntry): MonthInput {
+            return MonthInput(entry.arguments?.getLong(ARG_MONTH_ID) ?: 0L)
+        }
+    }
+
+    data object DetailMonth : NavRoutes(
+        route = String.format(ROUTE_MONTH_DETAIL, "{$ARG_MONTH_ID}"),
+        arguments = listOf(navArgument(ARG_MONTH_ID) {
+            type = NavType.LongType
+        })
+    ) {
+
+        fun routeForMonth(month: Int) = String.format(ROUTE_MONTH_DETAIL, month)
 
         fun fromEntry(entry: NavBackStackEntry): MonthInput {
             return MonthInput(entry.arguments?.getLong(ARG_MONTH_ID) ?: 0L)

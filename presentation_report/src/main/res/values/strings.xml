@@ -2,4 +2,7 @@
 <resources>
     <string name="copy_report">Reporte</string>
     <string name="copy_no_record">Sin Registros</string>
+    <string name="copy_total">Total %1$s</string>
+    <string name="copy_max">Mínimo: %1$s</string>
+    <string name="copy_min">Máximo: %1$s</string>
 </resources>

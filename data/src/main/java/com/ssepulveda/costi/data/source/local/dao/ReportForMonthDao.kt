@@ -29,7 +29,9 @@ interface ReportForMonthDao {
 
     @Query("SELECT \n" +
             "    month,\n" +
-            "    SUM(value) as total\n" +
+            "    SUM(value) as total,\n" +
+            "    MAX(value) as maxValue,\n" +
+            "    MIN(value) as minValue \n" +
             "FROM \n" +
             "    BillEntity\n" +
             "GROUP BY \n" +
