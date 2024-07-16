@@ -3,9 +3,9 @@ package com.ssepulveda.presentation_welcome.welcome
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.data.getDefaultData
 import com.ssepulveda.costi.domain.entity.Result
-import com.ssepulveda.costi.domain.useCase.SaveCurrentMonthUseCase
-import com.ssepulveda.costi.domain.useCase.SaveInitialConfigurationByDefaultUseCase
-import com.ssepulveda.costi.domain.useCase.UpdateInitialConfigurationUseCase
+import com.ssepulveda.costi.domain.useCase.config.SaveCurrentMonthUseCase
+import com.ssepulveda.costi.domain.useCase.config.SaveInitialConfigurationByDefaultUseCase
+import com.ssepulveda.costi.domain.useCase.config.UpdateInitialConfigurationUseCase
 import com.ssepulveda.presentation_common.navigation.NavRoutes
 import com.ssepulveda.presentation_common.state.MviViewModel
 import com.ssepulveda.presentation_common.state.UiState

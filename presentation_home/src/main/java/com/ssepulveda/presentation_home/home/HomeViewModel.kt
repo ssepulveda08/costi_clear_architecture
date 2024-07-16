@@ -2,10 +2,9 @@ package com.ssepulveda.presentation_home.home
 
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.domain.entity.Bill
-import com.ssepulveda.costi.domain.entity.Month
-import com.ssepulveda.costi.domain.useCase.DeleteBillUseCase
-import com.ssepulveda.costi.domain.useCase.GetHomeInformationUseCase
-import com.ssepulveda.costi.domain.useCase.SaveCurrentMonthUseCase
+import com.ssepulveda.costi.domain.useCase.bill.DeleteBillUseCase
+import com.ssepulveda.costi.domain.useCase.reports.GetHomeInformationUseCase
+import com.ssepulveda.costi.domain.useCase.config.SaveCurrentMonthUseCase
 import com.ssepulveda.modal_dialogs.entities.Dialog
 import com.ssepulveda.presentation_common.state.MviViewModel
 import com.ssepulveda.presentation_common.state.UiState

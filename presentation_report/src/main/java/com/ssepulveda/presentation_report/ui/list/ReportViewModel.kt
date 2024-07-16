@@ -1,7 +1,7 @@
 package com.ssepulveda.presentation_report.ui.list
 
 import androidx.lifecycle.viewModelScope
-import com.ssepulveda.costi.domain.useCase.GetReportMonthsUseCase
+import com.ssepulveda.costi.domain.useCase.reports.GetReportMonthsUseCase
 import com.ssepulveda.presentation_common.state.MviViewModel
 import com.ssepulveda.presentation_common.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel

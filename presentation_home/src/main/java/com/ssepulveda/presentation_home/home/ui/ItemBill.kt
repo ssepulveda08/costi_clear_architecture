@@ -40,6 +40,7 @@ import kotlin.random.Random
 fun ItemBill(
     billModel: BillModel,
     localeCode: String,
+    onClick: (Int) -> Unit,
     onDelete: (BillModel) -> Unit
 ) {
     Card(
@@ -48,6 +49,9 @@ fun ItemBill(
         ),
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {
+                onClick.invoke(billModel.id)
+            }
             .padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
     ) {
         Row(
@@ -133,7 +137,10 @@ private fun PreviewItemBill() {
                     "nameType",
                     ""
                 ),
-                "COP"
+                "COP",
+                onClick = {
+
+                }
             ) {
 
             }

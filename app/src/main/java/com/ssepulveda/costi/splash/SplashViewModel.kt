@@ -1,11 +1,10 @@
 package com.ssepulveda.costi.splash
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.domain.entity.Result
-import com.ssepulveda.costi.domain.useCase.GetCostTypeUseCase
-import com.ssepulveda.costi.domain.useCase.GetInitialConfigurationUseCase
-import com.ssepulveda.costi.domain.useCase.UpdateInitialConfigurationUseCase
+import com.ssepulveda.costi.domain.useCase.types.GetCostTypeUseCase
+import com.ssepulveda.costi.domain.useCase.config.GetInitialConfigurationUseCase
+import com.ssepulveda.costi.domain.useCase.config.UpdateInitialConfigurationUseCase
 import com.ssepulveda.presentation_common.navigation.NavRoutes
 import com.ssepulveda.presentation_common.state.MviViewModel
 import com.ssepulveda.presentation_common.state.UiState

@@ -4,7 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.ssepulveda.presentation_common.navigation.MonthInput
+import com.ssepulveda.presentation_common.inputs.MonthInput
 
 @Composable
 fun MonthDetailScreen(month: MonthInput) {

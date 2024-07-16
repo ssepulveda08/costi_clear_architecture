@@ -15,8 +15,8 @@ android {
         applicationId = "com.ssepulveda.costi"
         minSdk = 24
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.3"
+        versionCode = 5
+        versionName = "1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -62,7 +62,7 @@ dependencies {
     implementation(project(":presentation_common"))
     implementation(project(":presentation_welcome"))
     implementation(project(":presentation_home"))
-    implementation(project(":presentation_add_bill"))
+    implementation(project(":presentation_bill"))
     implementation(project(":presentation_report"))
     implementation(project(":analytics"))
 

@@ -1,7 +1,7 @@
 package com.ssepulveda.presentation_report.di
 
 import com.ssepulveda.costi.domain.repository.LocalReportForMonthRepository
-import com.ssepulveda.costi.domain.useCase.GetReportMonthsUseCase
+import com.ssepulveda.costi.domain.useCase.reports.GetReportMonthsUseCase
 import com.ssepulveda.costi.domain.useCase.UseCase
 import dagger.Module
 import dagger.Provides

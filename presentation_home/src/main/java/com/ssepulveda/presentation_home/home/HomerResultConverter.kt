@@ -2,7 +2,7 @@ package com.ssepulveda.presentation_home.home
 
 import com.ssepulveda.costi.data.source.getDefaultMonths
 import com.ssepulveda.costi.domain.entity.CurrentWeekReport
-import com.ssepulveda.costi.domain.useCase.GetHomeInformationUseCase
+import com.ssepulveda.costi.domain.useCase.reports.GetHomeInformationUseCase
 import com.ssepulveda.presentation_common.state.CommonResultConverter
 import com.ssepulveda.presentation_common.ui.getCurrentDate
 import com.ssepulveda.presentation_common.ui.getListColor

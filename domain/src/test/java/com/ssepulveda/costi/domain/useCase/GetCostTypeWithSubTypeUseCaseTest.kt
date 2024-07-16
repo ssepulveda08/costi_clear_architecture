@@ -4,15 +4,12 @@ import com.ssepulveda.costi.domain.entity.CostType
 import com.ssepulveda.costi.domain.entity.SubTypeCost
 import com.ssepulveda.costi.domain.repository.LocalCostTypeRepository
 import com.ssepulveda.costi.domain.repository.LocalSubTypeRepository
+import com.ssepulveda.costi.domain.useCase.types.GetCostTypeWithSubTypeUseCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock

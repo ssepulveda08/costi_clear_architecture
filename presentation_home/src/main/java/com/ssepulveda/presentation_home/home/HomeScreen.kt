@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.ssepulveda.presentation_common.inputs.DetailInput
 import com.ssepulveda.presentation_common.navigation.NavRoutes
 import com.ssepulveda.presentation_common.state.CommonScreen
 import com.ssepulveda.presentation_common.ui.CustomToolbar
@@ -164,9 +165,20 @@ private fun Home(
 
                 }
                 items(homeModel?.bills ?: listOf()) {
-                    ItemBill(it, homeModel?.localCode ?: "COP") { model ->
-                        viewModel.submitAction(HomeUiAction.DeleteBill(model))
-                    }
+                    ItemBill(
+                        it,
+                        homeModel?.localCode ?: "COP",
+                        onClick = {billId ->
+                            navController.navigate(
+                                NavRoutes.DetailBill.routeForDetail(DetailInput(
+                                    billId.toLong()
+                                ))
+                            )
+                        },
+                        onDelete = { model ->
+                            viewModel.submitAction(HomeUiAction.DeleteBill(model))
+                        }
+                    )
                 }
                 item {
                     Spacer(modifier = Modifier.padding(30.dp))

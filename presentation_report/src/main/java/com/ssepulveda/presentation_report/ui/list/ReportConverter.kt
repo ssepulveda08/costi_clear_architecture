@@ -1,7 +1,7 @@
 package com.ssepulveda.presentation_report.ui.list
 
 import com.ssepulveda.costi.data.source.getDefaultMonths
-import com.ssepulveda.costi.domain.useCase.GetReportMonthsUseCase
+import com.ssepulveda.costi.domain.useCase.reports.GetReportMonthsUseCase
 import com.ssepulveda.presentation_common.state.CommonResultConverter
 import javax.inject.Inject
 

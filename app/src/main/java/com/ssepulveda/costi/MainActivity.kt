@@ -16,8 +16,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ssepulveda.costi.splash.SplashScreen
 import com.ssepulveda.costi.splash.SplashViewModel
-import com.ssepulveda.presentation_add_bill.add.AddBillScreen
-import com.ssepulveda.presentation_add_bill.add.AddBillViewModel
+import com.ssepulveda.presentation_bill.add.AddBillScreen
+import com.ssepulveda.presentation_bill.add.AddBillViewModel
+import com.ssepulveda.presentation_bill.detail.DetailBillScreen
+import com.ssepulveda.presentation_bill.detail.DetailBillViewModel
 import com.ssepulveda.presentation_common.navigation.NavRoutes
 import com.ssepulveda.presentation_common.ui.CustomWebView
 import com.ssepulveda.presentation_common.ui.theme.AppTheme
@@ -102,13 +104,15 @@ fun App(navController: androidx.navigation.NavHostController) {
             ReportScreen(viewModel, navController)
         }
         composable(
-            route = NavRoutes.DetailMonth.route,
-            arguments = NavRoutes.Months.arguments
+            route = NavRoutes.DetailBill.route,
+            arguments = NavRoutes.DetailBill.arguments
         ) {
-            //val viewModel = hiltViewModel<ReportViewModel>()
-            MonthDetailScreen(
-                NavRoutes.DetailMonth.fromEntry(it)
-            )//(viewModel, navController)
+            val viewModel = hiltViewModel<DetailBillViewModel>()
+            DetailBillScreen(
+                viewModel = viewModel,
+                input =  NavRoutes.DetailBill.fromEntry(it),
+                navController = navController
+            )
         }
     }
 }

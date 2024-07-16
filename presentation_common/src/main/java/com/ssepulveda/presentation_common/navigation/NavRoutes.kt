@@ -4,7 +4,8 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.ssepulveda.costi.domain.entity.Month
+import com.ssepulveda.presentation_common.inputs.DetailInput
+import com.ssepulveda.presentation_common.inputs.MonthInput
 
 private const val ROUTE_SPLASH = "splash"
 private const val ROUTE_WELCOME = "welcome"
@@ -15,8 +16,10 @@ private const val ROUTE_BILL_ADD = "bill/add"
 private const val ROUTE_MONTH_DETAIL= "month/%s"
 private const val ROUTE_BILLS = "bills"
 private const val ROUTE_BILLS_FOR_MONTH = "bills/%s"
+private const val ROUTE_BILL_DETAIL = "bill/%s"
 private const val ROUTE_WEB_VIEW = "webView/%s"
 private const val ARG_MONTH_ID = "monthId"
+private const val ARG_BILL_ID = "billID"
 private const val ARG_URL = "url"
 
 sealed class NavRoutes(
@@ -35,14 +38,28 @@ sealed class NavRoutes(
 
     data object Bill_Add : NavRoutes(ROUTE_BILL_ADD)
 
+    data object DetailBill : NavRoutes(
+        route = String.format(ROUTE_BILL_DETAIL, "{$ARG_BILL_ID}"),
+        arguments = listOf(navArgument(ARG_BILL_ID) {
+            type = NavType.LongType
+        })
+    ) {
+
+        fun routeForDetail(input: DetailInput) = String.format(ROUTE_BILL_DETAIL, input.id)
+
+        fun fromEntry(entry: NavBackStackEntry): DetailInput {
+            return DetailInput(entry.arguments?.getLong(ARG_BILL_ID) ?: 0L)
+        }
+    }
+
     data object Bills : NavRoutes(
-        route = String.format(ROUTE_BILLS_FOR_MONTH, "{$ARG_MONTH_ID}"),
+        route = String.format(ROUTE_BILLS_FOR_MONTH, "{${ARG_MONTH_ID}"),
         arguments = listOf(navArgument(ARG_MONTH_ID) {
             type = NavType.LongType
         })
     ) {
 
-        fun routeForPost(monthInput: MonthInput) = String.format(ROUTE_BILLS, monthInput.monthId)
+        fun routeForPost(monthInput: MonthInput) = String.format(ROUTE_BILLS_FOR_MONTH, monthInput.monthId)
 
         fun fromEntry(entry: NavBackStackEntry): MonthInput {
             return MonthInput(entry.arguments?.getLong(ARG_MONTH_ID) ?: 0L)

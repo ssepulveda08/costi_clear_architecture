@@ -1,8 +1,6 @@
 package com.ssepulveda.presentation_common.state
 
-import android.util.Log
 import com.ssepulveda.costi.domain.entity.Result
-import com.ssepulveda.costi.domain.useCase.GetAllBillsByMonthUseCase
 
 abstract class CommonResultConverter<T : Any, R : Any> {
 

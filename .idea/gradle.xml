@@ -14,7 +14,7 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/modal_dialogs" />
-            <option value="$PROJECT_DIR$/presentation_add_bill" />
+            <option value="$PROJECT_DIR$/presentation_bill" />
             <option value="$PROJECT_DIR$/presentation_common" />
             <option value="$PROJECT_DIR$/presentation_home" />
             <option value="$PROJECT_DIR$/presentation_menu" />
