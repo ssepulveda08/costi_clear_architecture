@@ -5,9 +5,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocalBillRepository {
 
+    fun getBillById(billId: Int): Flow<Bill?>
+
     fun getAllBillsByMonth(month: Int): Flow<List<Bill>?>
 
     suspend fun addBill(bill: Bill): Flow<Long>
 
     suspend fun deleteBill(bill: Bill)
+
+    suspend fun updateBill(bill: Bill)
 }

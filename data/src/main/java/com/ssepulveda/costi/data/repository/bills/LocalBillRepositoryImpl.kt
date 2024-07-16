@@ -16,6 +16,19 @@ class LocalBillRepositoryImpl(
     private val billEntityDao: BillEntityDao
 ) : LocalBillRepository {
 
+    override fun getBillById(billId: Int): Flow<Bill?> =
+        billEntityDao.getBillByID(billId).map {
+            Bill(
+                id = it.id ?:0,
+                subType = it.subType,
+                description = it.description,
+                value = it.value,
+                month = it.month,
+                recordDate = it.recordDate,
+                updateDate = it.recordDate,
+            )
+        }
+
     override fun getAllBillsByMonth(month: Int): Flow<List<Bill>> =
         billEntityDao.getAllByMonth(month).map { list ->
             list?.map {
@@ -25,7 +38,8 @@ class LocalBillRepositoryImpl(
                     description = it.description,
                     value = it.value.toDouble(),
                     month = it.month,
-                    date = it.recordDate
+                    recordDate = it.recordDate,
+                    updateDate = it.recordDate,
                 )
             } ?: listOf()
         }
@@ -57,6 +71,19 @@ class LocalBillRepositoryImpl(
             Log.d("POTATO", "DELETE BILL ${bill.id}")
             billEntityDao.deleteById(id)
         }
+    }
+
+    override suspend fun updateBill(bill: Bill) {
+        val billUpdate = BillEntity(
+            id = bill.id,
+            description = bill.description,
+            subType = bill.subType,
+            value = bill.value,
+            month = bill.month,
+            recordDate = bill.recordDate,
+            updateDate = bill.updateDate
+        )
+        billEntityDao.update(billUpdate)
     }
 
 }

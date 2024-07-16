@@ -14,11 +14,13 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,41 +31,47 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ssepulveda.presentation_bill.R
+import com.ssepulveda.presentation_bill.utils.DateUtils
 import com.ssepulveda.presentation_bill.utils.DateUtils.convertMillisToLocalDate
 import com.ssepulveda.presentation_bill.utils.DateUtils.dateToString
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomDataPicker() {
+fun CustomDataPicker(
+    dateString: String,
+    dateToString: MutableState<String>
+) {
+
+    val dateState = rememberDatePickerState(
+        DateUtils.convertStringDateToMillis(dateString),
+    )
 
     val colorText = MaterialTheme.colorScheme.onSurface
 
-    val dateState = rememberDatePickerState()
     val millisToLocalDate = dateState.selectedDateMillis?.let {
         convertMillisToLocalDate(it)
     }
-    val dateToString = millisToLocalDate?.let {
+
+    dateToString.value = millisToLocalDate?.let {
         dateToString(millisToLocalDate)
-    } ?: "Choose Date"
+    } ?: stringResource(R.string.label_enter_value)
+
     var showDialog by remember { mutableStateOf(false) }
+
     Column(
-        //modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
-            value = dateToString,
-            onValueChange = {
-                // showDialog = true
-            },
+            value = dateToString.value,
+            onValueChange = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = {
                     showDialog = true
                 }),
             enabled = false,
-
             label = {
                 Text(
                     text = stringResource(R.string.label_description),
@@ -92,7 +100,9 @@ fun CustomDataPicker() {
                 onDismissRequest = { showDialog = false },
                 confirmButton = {
                     Button(
-                        onClick = { showDialog = false }
+                        onClick = {
+                            showDialog = false
+                        }
                     ) {
                         Text(text = "OK")
                     }

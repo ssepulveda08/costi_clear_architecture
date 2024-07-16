@@ -15,7 +15,10 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SingleToolbar(navController: NavController) {
+fun SingleToolbar(
+    title: String,
+    navController: NavController
+) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -23,9 +26,10 @@ fun SingleToolbar(navController: NavController) {
         ),
         title = {
             Text(
-                "Agergar Gasto",
+                title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleLarge
             )
         },
         navigationIcon = {

@@ -64,7 +64,8 @@ class HomeViewModel @Inject constructor(
                         description = bill.description,
                         value = bill.value,
                         month = 0,
-                        date = bill.date
+                        recordDate = bill.date,
+                        updateDate = ""
                     )
                 )
             ).collect {

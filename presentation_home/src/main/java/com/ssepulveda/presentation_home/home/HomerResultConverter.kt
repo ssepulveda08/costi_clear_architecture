@@ -26,7 +26,7 @@ class HomerResultConverter @Inject constructor() :
                 it.description,
                 it.subType,
                 "",
-                it.date
+                it.recordDate
             )
         }
 

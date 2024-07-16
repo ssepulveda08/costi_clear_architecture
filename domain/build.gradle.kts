@@ -1,4 +1,5 @@
 plugins {
+    kotlin("kapt")
     id("com.android.library")
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
@@ -41,11 +42,20 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
 
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
     // Test Mockito
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
     // testImplementation(libs.oi.mockk)
 
+
     testImplementation(libs.coroutines.test)
 
+}
+
+kapt {
+    correctErrorTypes = true
 }

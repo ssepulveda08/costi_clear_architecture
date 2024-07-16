@@ -6,4 +6,8 @@
     <string name="label_subtype_bill">Subtype de gasto</string>
     <string name="label_value">Ingresa un valor</string>
     <string name="copy_register">Registrar</string>
+    <string name="save_change">Guardar Cambios</string>
+    <string name="label_enter_value">Ingresa un valor</string>
+    <string name="title_edit_bill">Modificar gasto</string>
+    <string name="title_add_bill">Agregar gasto</string>
 </resources>

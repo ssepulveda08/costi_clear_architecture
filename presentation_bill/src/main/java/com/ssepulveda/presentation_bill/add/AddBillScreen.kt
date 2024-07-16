@@ -33,6 +33,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ssepulveda.presentation_bill.R
+import com.ssepulveda.presentation_bill.detail.DetailBillUiAction
+import com.ssepulveda.presentation_bill.ui.FormBillComponent
+import com.ssepulveda.presentation_bill.ui.FormInput
 import com.ssepulveda.presentation_common.ui.SingleToolbar
 import com.ssepulveda.presentation_bill.ui.SpinnerComponent
 import com.ssepulveda.presentation_common.state.CommonScreen
@@ -48,7 +51,9 @@ fun AddBillScreen(
     }
     viewModel.uiStateFlow.collectAsState().value.let { state ->
         CommonScreen(state = state) {
-            FormAddBill(viewModel, navController)
+            it?.let { input ->
+                FormAddBill(input, viewModel, navController)
+            }
         }
     }
 
@@ -70,23 +75,46 @@ fun AddBillScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun FormAddBill(viewModel: AddBillViewModel, navController: NavController) {
+private fun FormAddBill(
+    input: FormInput,
+    viewModel: AddBillViewModel,
+    navController: NavController
+) {
 
-    val types by viewModel.types.collectAsState()
+    FormBillComponent(
+        input,
+        navController,
+        false,
+        stringResource(R.string.title_add_bill),
+        {
+            Text(
+                text = stringResource(R.string.copy_information_add_bill),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
+            )
+        },
+    ) {
+        viewModel.submitAction(AddBillUiAction.AddBill(it))
+    }
+
+    /*val types by viewModel.types.collectAsState()
     val subTypes by viewModel.filterSubType.collectAsState()
     val subTypeSelected by viewModel.subTypeSelected.collectAsState()
     val value by viewModel.value.collectAsState()
     val description by viewModel.description.collectAsState()
     val enabledButton by viewModel.enableButton.collectAsState()
-    var selectedType by remember { mutableStateOf<ItemDropdown?>(null) }
+    var selectedType by remember { mutableStateOf<ItemDropdown?>(null) }*/
 
-    Scaffold(
+    /*Scaffold(
         modifier = Modifier,
         topBar = {
-            SingleToolbar(navController)
+            SingleToolbar(
+                stringResource(R.string.title_add_bill),
+                navController
+            )
         }
     ) { innerPadding ->
-        Column(
+       /* Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(start = 16.dp, end = 16.dp)
@@ -179,28 +207,10 @@ private fun FormAddBill(viewModel: AddBillViewModel, navController: NavControlle
                     style = MaterialTheme.typography.labelMedium
                 )
             }
-        }
-    }
-}
+        }*/
 
-object MoneyVisualTransformation : VisualTransformation {
+        FormBillComponent(
 
-    override fun filter(text: AnnotatedString): TransformedText {
-        val modifiedText = if (text.isNotEmpty()) "$ $text" else ""
-        val a = AnnotatedString(text = modifiedText)
-        return TransformedText(a, MyOffsetMapping())
-    }
-
-}
-
-class MyOffsetMapping : OffsetMapping {
-    override fun originalToTransformed(offset: Int): Int {
-        if (offset <= 0) return 0
-        return offset + 2
-    }
-
-    override fun transformedToOriginal(offset: Int): Int {
-        if (offset <= 0) return 0
-        return offset - 2
-    }
+        )
+    }*/
 }

@@ -1,6 +1,7 @@
 package com.ssepulveda.presentation_bill.ui
 
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,7 +43,8 @@ fun FormBillComponent(
     input: FormInput,
     navController: NavController,
     isEditable: Boolean,
-    title: @Composable ColumnScope.() -> Unit = {},
+    title: String,
+    information: @Composable ColumnScope.() -> Unit = {},
     onCompleted: (FormInput) -> Unit
 ) {
 
@@ -49,18 +52,19 @@ fun FormBillComponent(
         mutableStateOf(input)
     }
 
-    var selectedType by remember {
-        mutableStateOf<ItemDropdown?>(null)
-    }
-
     var subTypes by remember {
         mutableStateOf<List<ItemDropdown>>(listOf())
     }
 
+    val dateString: MutableState<String> = remember { mutableStateOf("") }
+
     Scaffold(
         modifier = Modifier,
         topBar = {
-            SingleToolbar(navController)
+            SingleToolbar(
+                title, //stringResource(R.string.title_edit_bill),
+                navController
+            )
         }
     ) { innerPadding ->
         Column(
@@ -72,7 +76,7 @@ fun FormBillComponent(
         ) {
 
             Spacer(modifier = Modifier.padding(8.dp))
-            this.title()
+            this.information()
             Spacer(modifier = Modifier.padding(8.dp))
             TextField(
                 modifier = Modifier.fillMaxWidth(),
@@ -100,11 +104,13 @@ fun FormBillComponent(
             SpinnerComponent(
                 mutableInput.types,
                 label = stringResource(R.string.label_type_bill),
-                selectedType
+                mutableInput.typeSelect
             ) { item ->
                 subTypes = mutableInput.subTypes.filter { it.subType == item.id }
-                selectedType = item
-                mutableInput = mutableInput.copy(subTypeSelect = null)
+                mutableInput = mutableInput.copy(
+                    typeSelect = item,
+                    subTypeSelect = null
+                )
             }
             Spacer(modifier = Modifier.padding(8.dp))
             SpinnerComponent(
@@ -148,17 +154,30 @@ fun FormBillComponent(
             )
             Spacer(modifier = Modifier.padding(8.dp))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isEditable) {
-                CustomDataPicker()
+                CustomDataPicker(
+                    input.recordDate ?: "",
+                    dateString
+                )
             }
             Spacer(modifier = Modifier.padding(8.dp))
             Button(
                 onClick = {
-                    onCompleted.invoke(mutableInput)
+                    val newValue = if (isEditable) {
+                        mutableInput.copy(recordDate = dateString.value)
+                    } else {
+                        mutableInput
+                    }
+                    onCompleted.invoke(newValue)
                 },
                 enabled = mutableInput.isCompleted()
             ) {
+                val textButton = if (isEditable) {
+                    stringResource(R.string.save_change)
+                } else {
+                    stringResource(R.string.copy_register)
+                }
                 Text(
-                    text = stringResource(R.string.copy_register),
+                    text = textButton,
                     modifier = Modifier.padding(start = 32.dp, end = 32.dp),
                     style = MaterialTheme.typography.labelMedium
                 )

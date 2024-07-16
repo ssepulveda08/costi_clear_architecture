@@ -2,6 +2,7 @@ package com.ssepulveda.presentation_bill.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -35,9 +36,15 @@ object DateUtils {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun dateToString(date: LocalDate): String {
-        val dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM, yyyy", Locale.getDefault())
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
         val dateInMillis = convertMillisToLocalDateWithFormatter(date, dateFormatter)
         return dateFormatter.format(dateInMillis)
+    }
+
+    fun convertStringDateToMillis(dateString: String): Long? {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val date = dateFormat.parse(dateString)
+        return date?.time
     }
 
 }

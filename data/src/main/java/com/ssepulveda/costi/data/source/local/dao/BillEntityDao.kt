@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.ssepulveda.costi.data.source.local.entities.BillEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,4 +20,10 @@ interface BillEntityDao {
 
     @Query("DELETE FROM BillEntity WHERE id = :billId")
     fun deleteById(billId: Int)
+
+    @Query("SELECT * FROM BillEntity WHERE ID = :billId")
+    fun getBillByID(billId: Int) : Flow<BillEntity>
+
+    @Update
+    suspend fun update(bill: BillEntity)
 }
