@@ -28,6 +28,7 @@ import com.ssepulveda.presentation_home.home.HomeViewModel
 import com.ssepulveda.presentation_report.ui.list.ReportScreen
 import com.ssepulveda.presentation_report.ui.list.ReportViewModel
 import com.ssepulveda.presentation_report.ui.detail.MonthDetailScreen
+import com.ssepulveda.presentation_report.ui.detail.MonthDetailViewModel
 import com.ssepulveda.presentation_welcome.welcome.WelcomeScreen
 import com.ssepulveda.presentation_welcome.welcome.WelcomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -112,6 +113,17 @@ fun App(navController: androidx.navigation.NavHostController) {
                 viewModel = viewModel,
                 input =  NavRoutes.DetailBill.fromEntry(it),
                 navController = navController
+            )
+        }
+        composable(
+            route = NavRoutes.DetailMonth.route,
+            arguments = NavRoutes.DetailMonth.arguments
+        ) {
+            val viewModel = hiltViewModel<MonthDetailViewModel>()
+            MonthDetailScreen(
+                NavRoutes.DetailMonth.fromEntry(it),
+                viewModel,
+                navController
             )
         }
     }

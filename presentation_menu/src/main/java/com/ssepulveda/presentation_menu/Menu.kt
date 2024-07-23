@@ -61,7 +61,7 @@ fun Menu(
             )
             Spacer(modifier = Modifier.padding(8.dp))
             ItemMenu(
-                stringResource(R.string.copy_see_menu)
+                stringResource(R.string.copy_report_for_month)
             ) {
                 navController?.navigate(NavRoutes.Months.route)
             }

@@ -1,18 +1,25 @@
 package com.ssepulveda.costi.data.repository.report
 
+import com.ssepulveda.costi.data.source.getDefaultMonths
+import com.ssepulveda.costi.data.source.local.dao.BillEntityDao
 import com.ssepulveda.costi.data.source.local.dao.ReportForMonthDao
+import com.ssepulveda.costi.data.source.local.entities.BillEntity
 import com.ssepulveda.costi.data.source.local.entities.ReportTotalForType
+import com.ssepulveda.costi.domain.entity.Bill
 import com.ssepulveda.costi.domain.entity.CurrentWeekReport
 import com.ssepulveda.costi.domain.entity.ReportForMonth
 import com.ssepulveda.costi.domain.entity.ReportMonth
+import com.ssepulveda.costi.domain.entity.ReportMonthDetail
 import com.ssepulveda.costi.domain.entity.TotalValueByType
 import com.ssepulveda.costi.domain.repository.LocalReportForMonthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class LocalReportForMonthRepositoryImpl(
     private val reportForMonthDao: ReportForMonthDao,
+    private val billEntityDao: BillEntityDao
 ) : LocalReportForMonthRepository {
 
     override fun getReportForMonth(month: Int): Flow<ReportForMonth> =
@@ -43,7 +50,29 @@ class LocalReportForMonthRepositoryImpl(
             list.map { ReportMonth(it.month, it.total, it.maxValue, it.minValue) }
         }
 
+    override fun getReportMonthDetail(month: Int): Flow<ReportMonthDetail?> = flow {
+        getDefaultMonths().firstOrNull { it.id == month }?.let { model ->
+            billEntityDao.getAllByMonth(month).collect {list ->
+                val response = ReportMonthDetail(
+                    model,
+                    list?.map { it.toBill() }
+                )
+                emit(response)
+            }
+        } ?: emit(null)
+    }
 }
+
+fun BillEntity.toBill(): Bill = Bill(
+    id = this.id,
+    subType = this.subType,
+    description = this.description,
+    value = this.value,
+    month = this.month,
+    recordDate = this.recordDate,
+    updateDate = this.updateDate
+)
+
 
 private fun List<ReportTotalForType>.toReport(): List<TotalValueByType> {
     return this.map { report ->

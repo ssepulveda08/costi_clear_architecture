@@ -35,7 +35,6 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = LAY
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
-
     @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
@@ -45,7 +44,6 @@ class RepositoryModule {
             "costs-database"
         ).build()
     }
-
 
     @Provides
     fun provideTypeOfExpenseDao(database: AppDatabase): TypeOfExpenseDao = database.typeOfExpenseDao()
@@ -90,7 +88,9 @@ class RepositoryModule {
     @Provides
     fun provideLocalReportForMonthRepositoryImpl(
         reportForMonthDao: ReportForMonthDao,
+        billEntityDao: BillEntityDao,
     ): LocalReportForMonthRepository = LocalReportForMonthRepositoryImpl(
-        reportForMonthDao
+        reportForMonthDao,
+        billEntityDao
     )
 }

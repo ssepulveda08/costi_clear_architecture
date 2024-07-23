@@ -22,23 +22,27 @@ class LocalBillRepositoryImplTest {
     fun testGetAllCostType() = runTest {
         val localBillEmptyType = listOf(
             BillEntity(
-            id =1,
-            subType = 1,
-            description = "name",
-            value = 2000.0,
-            1,
+                id = 1,
+                subType = 1,
+                description = "name",
+                value = 2000.0,
+                1,
                 "",
                 ""
             )
         )
         val expectedSubType = listOf(SubTypeCost(1, "type1"))
-        val localBillType = listOf(Bill(
-            id =1,
-            subType = 1,
-            description = "name",
-            value = 2000.0,
-            1
-            ))
+        val localBillType = listOf(
+            Bill(
+                id = 1,
+                subType = 1,
+                description = "name",
+                value = 2000.0,
+                1,
+                "",
+                ""
+            )
+        )
 
         Mockito.`when`(billEntityDao.getAllByMonth(1))
             .thenReturn(flowOf(localBillEmptyType))

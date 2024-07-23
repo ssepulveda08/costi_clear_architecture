@@ -1,5 +1,6 @@
 package com.ssepulveda.presentation_common.navigation
 
+import android.util.Log
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
@@ -62,21 +63,22 @@ sealed class NavRoutes(
         fun routeForPost(monthInput: MonthInput) = String.format(ROUTE_BILLS_FOR_MONTH, monthInput.monthId)
 
         fun fromEntry(entry: NavBackStackEntry): MonthInput {
-            return MonthInput(entry.arguments?.getLong(ARG_MONTH_ID) ?: 0L)
+            return MonthInput(entry.arguments?.getInt(ARG_MONTH_ID) ?: 0)
         }
     }
 
     data object DetailMonth : NavRoutes(
         route = String.format(ROUTE_MONTH_DETAIL, "{$ARG_MONTH_ID}"),
         arguments = listOf(navArgument(ARG_MONTH_ID) {
-            type = NavType.LongType
+            type = NavType.IntType
         })
     ) {
 
         fun routeForMonth(month: Int) = String.format(ROUTE_MONTH_DETAIL, month)
 
         fun fromEntry(entry: NavBackStackEntry): MonthInput {
-            return MonthInput(entry.arguments?.getLong(ARG_MONTH_ID) ?: 0L)
+            Log.d("POTATO", "entry ${entry.arguments?.getInt(ARG_MONTH_ID)}")
+            return MonthInput(entry.arguments?.getInt(ARG_MONTH_ID) ?: 0)
         }
     }
 
