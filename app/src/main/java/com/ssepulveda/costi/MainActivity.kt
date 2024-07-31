@@ -87,7 +87,7 @@ fun App(navController: androidx.navigation.NavHostController) {
             route = NavRoutes.WebView.route,
             arguments = NavRoutes.WebView.arguments
         ) {
-            Log.d("POTATO", NavRoutes.WebView.fromEntry(it))
+           // Log.d("POTATO", NavRoutes.WebView.fromEntry(it))
             CustomWebView(url = NavRoutes.WebView.fromEntry(it), navController)
         }
         composable(

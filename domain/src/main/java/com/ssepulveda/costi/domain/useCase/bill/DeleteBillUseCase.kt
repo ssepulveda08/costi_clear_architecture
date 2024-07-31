@@ -18,8 +18,7 @@ class DeleteBillUseCase(
 
     override fun process(request: Request): Flow<Response> =
         flow {
-
-            Log.d("POTATO", "DELETE BILL 2 ${request.bill.id}")
+           // Log.d("POTATO", "DELETE BILL 2 ${request.bill.id}")
             localBillRepository.deleteBill(request.bill)
             emit(Response)
         }

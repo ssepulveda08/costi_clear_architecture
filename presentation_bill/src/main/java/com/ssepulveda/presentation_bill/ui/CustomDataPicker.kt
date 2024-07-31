@@ -1,6 +1,7 @@
 package com.ssepulveda.presentation_bill.ui
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +33,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ssepulveda.presentation_bill.R
 import com.ssepulveda.presentation_bill.utils.DateUtils
+import com.ssepulveda.presentation_bill.utils.DateUtils.convertMillisToDate
 import com.ssepulveda.presentation_bill.utils.DateUtils.convertMillisToLocalDate
+import com.ssepulveda.presentation_bill.utils.DateUtils.convertStringDateToMillis
 import com.ssepulveda.presentation_bill.utils.DateUtils.dateToString
+import com.ssepulveda.presentation_bill.utils.DateUtils.toFormatterString
+import java.time.Instant
+import java.time.ZoneId
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,22 +48,15 @@ fun CustomDataPicker(
     dateString: String,
     dateToString: MutableState<String>
 ) {
-
-    val dateState = rememberDatePickerState(
-        DateUtils.convertStringDateToMillis(dateString),
-    )
+    val dateState =
+        rememberDatePickerState(initialSelectedDateMillis = convertStringDateToMillis(dateString))
 
     val colorText = MaterialTheme.colorScheme.onSurface
 
-    val millisToLocalDate = dateState.selectedDateMillis?.let {
-        convertMillisToLocalDate(it)
-    }
-
-    dateToString.value = millisToLocalDate?.let {
-        dateToString(millisToLocalDate)
-    } ?: stringResource(R.string.label_enter_value)
-
     var showDialog by remember { mutableStateOf(false) }
+    dateToString.value = dateState.selectedDateMillis?.let { millis ->
+        convertMillisToDate(millis)
+    } ?: stringResource(id = R.string.label_enter_value)
 
     Column(
         verticalArrangement = Arrangement.Center,

@@ -27,7 +27,7 @@ class DetailBillViewModel @Inject constructor(
     override fun initState(): UiState<FormInput> = UiState.Loading
 
     private fun loadTypesAndSubTypes(input: DetailInput) {
-        Log.d("POTATO", "${input.id}")
+       // Log.d("POTATO", "${input.id}")
         viewModelScope.launch {
             getTypesAndSubTypesUseCase.execute(GetTypesAndSubTypesUseCase.Request)
                 .collect { result ->

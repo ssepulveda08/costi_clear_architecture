@@ -28,7 +28,7 @@ fun DetailBillScreen(
     viewModel.uiStateFlow.collectAsState().value.let { state ->
         CommonScreen(state = state) {
             it?.let { form ->
-                Log.d("POTATO", "Form ${form.typeSelect}")
+                //Log.d("POTATO", "Form ${form.typeSelect}")
                 FormBillComponent(
                     input = form,
                     navController = navController,
