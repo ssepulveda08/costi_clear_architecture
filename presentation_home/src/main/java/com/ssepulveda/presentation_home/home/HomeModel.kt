@@ -15,6 +15,8 @@ data class HomeModel(
     val reportForType: List<CircleChart> = listOf(),
     val reportForWeek: List<Bar> = listOf(),
     val localCode: String = "COP",
+    val currentWeek: Int = 0,
+    val weeklyReport: List<WeeklyReport> = listOf(),
 )
 
 data class BillModel(
@@ -25,3 +27,12 @@ data class BillModel(
     val nameType: String,
     val date: String,
 )
+
+
+data class WeeklyReport(
+    val week: Int,
+    val startDateWeed: String,
+    val endDateWeed: String,
+    val days: List<Bar> = listOf()
+)
+

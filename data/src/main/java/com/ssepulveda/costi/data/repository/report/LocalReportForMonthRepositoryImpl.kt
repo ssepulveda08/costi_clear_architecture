@@ -4,14 +4,17 @@ import com.ssepulveda.costi.data.source.getDefaultMonths
 import com.ssepulveda.costi.data.source.local.dao.BillEntityDao
 import com.ssepulveda.costi.data.source.local.dao.ReportForMonthDao
 import com.ssepulveda.costi.data.source.local.entities.BillEntity
+import com.ssepulveda.costi.data.source.local.entities.DayOfWeekReport
 import com.ssepulveda.costi.data.source.local.entities.ReportTotalForType
 import com.ssepulveda.costi.domain.entity.Bill
 import com.ssepulveda.costi.domain.entity.CurrentWeekReport
+import com.ssepulveda.costi.domain.entity.DayOfWeek
 import com.ssepulveda.costi.domain.entity.ReportForMonth
 import com.ssepulveda.costi.domain.entity.ReportMonth
 import com.ssepulveda.costi.domain.entity.ReportMonthDetail
 import com.ssepulveda.costi.domain.entity.TotalValueByType
 import com.ssepulveda.costi.domain.repository.LocalReportForMonthRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
@@ -22,13 +25,17 @@ class LocalReportForMonthRepositoryImpl(
     private val billEntityDao: BillEntityDao
 ) : LocalReportForMonthRepository {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun getReportForMonth(month: Int): Flow<ReportForMonth> =
         reportForMonthDao.getTotalByMonth(month).flatMapConcat { totalMonth ->
-            reportForMonthDao.getReportForMonth(month).map { list ->
-                ReportForMonth(
-                    totalMonth ?: 0.0,
-                    list.toReport()
-                )
+            reportForMonthDao.getReportForMonth(month).flatMapConcat { list ->
+                 reportForMonthDao.getWeeksReportForMonth(month).map { days ->
+                     ReportForMonth(
+                         total = totalMonth ?: 0.0,
+                         reportForType = list.toReport(),
+                         daysOfWeek = days.map { it.toDayOfWeek() }
+                     )
+                 }
             }
         }
 
@@ -62,6 +69,14 @@ class LocalReportForMonthRepositoryImpl(
         } ?: emit(null)
     }
 }
+
+fun DayOfWeekReport.toDayOfWeek(): DayOfWeek = DayOfWeek(
+    week = this.week,
+    day = this.day,
+    dayOfWeek = this.dayOf,
+    numRecords = this.numRecords,
+    total = this.total,
+)
 
 fun BillEntity.toBill(): Bill = Bill(
     id = this.id,

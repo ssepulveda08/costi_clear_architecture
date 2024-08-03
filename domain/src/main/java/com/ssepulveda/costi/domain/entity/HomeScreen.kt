@@ -6,4 +6,5 @@ data class HomeScreen(
     val bills: List<Bill>,
     val dataReportType: List<TotalValueByType> = listOf(),
     val dataReportWeed: List<CurrentWeekReport> = listOf(),
+    val daysOfWeek: List<DayOfWeek> = listOf()
 )

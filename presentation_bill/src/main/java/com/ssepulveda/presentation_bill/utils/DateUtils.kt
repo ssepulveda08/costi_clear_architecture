@@ -9,6 +9,8 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.temporal.IsoFields
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -74,11 +76,28 @@ object DateUtils {
     }
 
     fun convertStringDateToMillis(dateString: String): Long? {
-        Log.d("POTATO", "----dateString $dateString")
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val date = dateFormat.parse(dateString)
-        Log.d("POTATO", "date: ${date.time} yy")
         return date?.time
     }
+
+    /* @RequiresApi(Build.VERSION_CODES.O)
+     fun getWeeksForMonth(mes: Int): List<Int> {
+         val today = LocalDate.now()
+         val year = today.year
+
+         val weeks = mutableSetOf<Int>()
+         val startDay = LocalDate.of(year, mes, 1)
+         val endDay = startDay.withDayOfMonth(startDay.lengthOfMonth())
+
+         var fecha = startDay
+         while (fecha <= endDay) {
+             val weekYear = fecha.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+             weeks.add(weekYear)
+             fecha = fecha.plusDays(1)
+         }
+         return weeks.sorted()
+     } */
+
 
 }

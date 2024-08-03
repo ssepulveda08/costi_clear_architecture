@@ -18,8 +18,11 @@ abstract class MviViewModel<T : Any, S : UiState<T>, A : UiAction, E : UiSingleE
     private val _singleEventFlow = Channel<E>()
     val singleEventFlow = _singleEventFlow.receiveAsFlow()
 
-    private val _showSingleDialog = MutableStateFlow<Dialog?>(null)
-    val showSingleDialog = _showSingleDialog.asStateFlow()
+    //private val _showSingleDialog = MutableStateFlow<Dialog?>(null)
+    //val showSingleDialog = _showSingleDialog.asStateFlow()
+
+    private val _uiEventFlow: MutableStateFlow<UIEvent?> = MutableStateFlow(null)
+    val uiEvent = _uiEventFlow.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -39,7 +42,19 @@ abstract class MviViewModel<T : Any, S : UiState<T>, A : UiAction, E : UiSingleE
         }
     }
 
-    fun submitDialog(dialog: Dialog) {
+    fun submitEventFlow(uIEvent: UIEvent) {
+        viewModelScope.launch {
+            _uiEventFlow.emit(uIEvent)
+        }
+    }
+
+    fun hideEventFlow() {
+        viewModelScope.launch {
+            _uiEventFlow.emit(null)
+        }
+    }
+
+   /* fun submitDialog(dialog: Dialog) {
         viewModelScope.launch {
             _showSingleDialog.emit(dialog)
         }
@@ -49,7 +64,7 @@ abstract class MviViewModel<T : Any, S : UiState<T>, A : UiAction, E : UiSingleE
         viewModelScope.launch {
             _showSingleDialog.emit(null)
         }
-    }
+    }*/
 
     fun submitState(state: S) {
         viewModelScope.launch {

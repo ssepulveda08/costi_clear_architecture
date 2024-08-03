@@ -32,7 +32,11 @@ class GetHomeInformationUseCase(
                 )
             }.flatMapConcat { model ->
                 localReportForMonthRepository.getReportForMonth(model.idMonth).map {
-                    model.copy(dataReportType = it.reportForType, totalMonth = it.total ?: 0.0)
+                    model.copy(
+                        dataReportType = it.reportForType,
+                        totalMonth = it.total ?: 0.0,
+                        daysOfWeek = it.daysOfWeek
+                    )
                 }.flatMapConcat { modelEnd ->
                     localReportForMonthRepository.getCurrentWeekReport(modelEnd.idMonth).map {
                         Response(modelEnd.copy(dataReportWeed = it ?: listOf()))

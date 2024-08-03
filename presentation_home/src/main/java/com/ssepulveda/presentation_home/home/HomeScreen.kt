@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -34,8 +35,8 @@ import androidx.navigation.NavHostController
 import com.ssepulveda.presentation_common.inputs.DetailInput
 import com.ssepulveda.presentation_common.navigation.NavRoutes
 import com.ssepulveda.presentation_common.state.CommonScreen
+import com.ssepulveda.presentation_common.state.CommonUIEvent
 import com.ssepulveda.presentation_common.ui.CustomToolbar
-import com.ssepulveda.presentation_common.ui.DialogController
 import com.ssepulveda.presentation_home.R
 import com.ssepulveda.presentation_home.home.ui.GraphicsSection
 import com.ssepulveda.presentation_home.home.ui.HeaderSection
@@ -69,8 +70,10 @@ fun HomeScreen(
         }
     }
 
-    viewModel.showSingleDialog.collectAsState().value.let { dialog ->
-        DialogController(dialog)
+    viewModel.uiEvent.collectAsState().value.let {
+        CommonUIEvent(it) {
+            viewModel.hideEventFlow()
+        }
     }
 
 }
@@ -84,6 +87,10 @@ private fun Home(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    //val uiEvent by stable
+
+    //val uiEvent = viewModel.uiEvent as MutableState<UIEvent>
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -109,6 +116,11 @@ private fun Home(
             },
             contentWindowInsets = WindowInsets.safeDrawing, //WindowInsets.statusBars,
             bottomBar = {
+            },
+            snackbarHost = {
+                /*Snackbar {
+                    Text(text = "prueba")
+                }*/
             },
             floatingActionButton = {
                 ExtendedFloatingActionButton(
@@ -142,6 +154,7 @@ private fun Home(
                             color = MaterialTheme.colorScheme.inversePrimary, thickness = 0.5.dp
                         )
                         Spacer(modifier = Modifier.padding(8.dp))
+
                         GraphicsSection(homeModel)
 
                         Spacer(modifier = Modifier.padding(8.dp))
@@ -168,11 +181,13 @@ private fun Home(
                     ItemBill(
                         it,
                         homeModel?.localCode ?: "COP",
-                        onClick = {billId ->
+                        onClick = { billId ->
                             navController.navigate(
-                                NavRoutes.DetailBill.routeForDetail(DetailInput(
-                                    billId.toLong()
-                                ))
+                                NavRoutes.DetailBill.routeForDetail(
+                                    DetailInput(
+                                        billId.toLong()
+                                    )
+                                )
                             )
                         },
                         onDelete = { model ->

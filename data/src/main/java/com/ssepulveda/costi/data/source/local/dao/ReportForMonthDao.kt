@@ -2,6 +2,7 @@ package com.ssepulveda.costi.data.source.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.ssepulveda.costi.data.source.local.entities.DayOfWeekReport
 import com.ssepulveda.costi.data.source.local.entities.ReportForMonth
 import com.ssepulveda.costi.data.source.local.entities.ReportForWeek
 import com.ssepulveda.costi.data.source.local.entities.ReportTotalForType
@@ -42,4 +43,35 @@ interface ReportForMonthDao {
 
     @Query("SELECT SUM(value)  FROM BillEntity WHERE  month = :month")
     fun getTotalByMonth(month: Int): Flow<Double?>
+
+    @Query("WITH Week AS (\n" +
+            "    SELECT\n" +
+            "        strftime('%Y-%m', 'now') AS current_month,\n" +
+            "        strftime('%W', recordDate) AS week,\n" +
+            "        strftime('%d', recordDate) AS day,\n" +
+            "        strftime('%w', recordDate) AS dayOf,"+
+
+            "        value\n" +
+            "    FROM BillEntity\n" +
+            "    WHERE month = :month\n" +
+            "),\n" +
+            "Report AS (\n" +
+            "    SELECT\n" +
+            "        week,\n" +
+            "        day,\n" +
+            "        dayOf,\n" +
+            "        COUNT(*) AS num_records,\n" +
+            "        SUM(value) AS suma_values\n" +
+            "    FROM Week\n" +
+            "    GROUP BY week, day\n" +
+            ")\n" +
+            "SELECT\n" +
+            "    week,\n" +
+            "    day,\n" +
+            "    dayOf,\n" +
+            "    num_records AS numRecords,\n" +
+            "    suma_values AS total\n" +
+            "FROM Report\n" +
+            "ORDER BY week, day;")
+    fun getWeeksReportForMonth(month: Int) :Flow<List<DayOfWeekReport>>
 }

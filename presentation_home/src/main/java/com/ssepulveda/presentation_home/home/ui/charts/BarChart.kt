@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -42,7 +43,8 @@ fun BarChart(
     val context = LocalContext.current
     val textMeasurer = rememberTextMeasurer()
     val newStyleLabel = MaterialTheme.typography.labelSmall.copy(
-        fontSize = 8.sp
+        fontSize = 8.sp,
+        color = if(isSystemInDarkTheme())  Color.White else Color.Black
     )
     Column(
         modifier = Modifier.then(modifier)
@@ -121,11 +123,11 @@ fun BarChart(
                     )
                 }
                 val textLabel = context.resources.getText(bar.label).toString()
-                val newValue = textMeasurer.measure(textLabel, newStyleLabel)
+                val newValue = textMeasurer.measure(textLabel.substring(0, 3), newStyleLabel)
                 drawText(
                     newValue,
                     topLeft = Offset(
-                        x = startX - 10,
+                        x = startX,
                         y = size.height - 4
                     )
                 )
