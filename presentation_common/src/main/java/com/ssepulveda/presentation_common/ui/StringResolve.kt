@@ -9,4 +9,7 @@ class StringResolve @Inject constructor(@ApplicationContext private val context:
 
     fun getString(@StringRes idRes: Int, vararg args: Any?) =
         context.resources.getString(idRes, args)
+
+    fun getString(@StringRes idRes: Int, string: String?) =
+        context.resources.getString(idRes, string)
 }

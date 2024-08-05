@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DrawerValue
@@ -22,13 +23,19 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -51,12 +58,20 @@ fun HomeScreen(
     navController: NavHostController,
 ) {
 
+
+    val snackBarHostState = remember { SnackbarHostState() }
+
     LaunchedEffect(Unit) {
         viewModel.submitAction(HomeUiAction.Load)
     }
     viewModel.uiStateFlow.collectAsState().value.let { state ->
         CommonScreen(state = state) {
-            Home(viewModel, it, navController)
+            Home(
+                viewModel,
+                it,
+                navController,
+                snackBarHostState
+            )
         }
     }
 
@@ -71,7 +86,7 @@ fun HomeScreen(
     }
 
     viewModel.uiEvent.collectAsState().value.let {
-        CommonUIEvent(it) {
+        CommonUIEvent(it, snackBarHostState) {
             viewModel.hideEventFlow()
         }
     }
@@ -84,6 +99,7 @@ private fun Home(
     viewModel: HomeViewModel,
     homeModel: HomeModel?,
     navController: NavHostController,
+    snackBarHostState: SnackbarHostState,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -117,11 +133,6 @@ private fun Home(
             contentWindowInsets = WindowInsets.safeDrawing, //WindowInsets.statusBars,
             bottomBar = {
             },
-            snackbarHost = {
-                /*Snackbar {
-                    Text(text = "prueba")
-                }*/
-            },
             floatingActionButton = {
                 ExtendedFloatingActionButton(
                     onClick = {
@@ -134,7 +145,9 @@ private fun Home(
                     icon = { Icon(Icons.Filled.Add, "Extended floating action button.") },
                     text = { Text(text = stringResource(id = R.string.copy_add_bill)) },
                 )
-            }
+            },snackbarHost = {
+                SnackbarHost(snackBarHostState)
+            },
         ) { innerPadding ->
 
             LazyColumn(

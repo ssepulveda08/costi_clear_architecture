@@ -22,7 +22,7 @@
     <string name="title_successful_process">¡Proceso Exitoso!</string>
     <string name="description_delete_bill">El gasto se ha eliminado correctamente</string>
     <string name="copy_ok">OK</string>
-    <string name="title_detele_description">¿Estás seguro de que deseas eliminar el gasto: %1$s? Una vez eliminado, no podrás revertir los cambios.\"</string>
+    <string name="title_delete_description">¿Estás seguro de que deseas eliminar el gasto: %1$s? Una vez eliminado, no podrás revertir los cambios.\"</string>
     <string name="copy_delete">Eliminar</string>
     <string name="copy_cancel">Cancelar</string>
     <string name="title_close_month">Aviso Importante</string>

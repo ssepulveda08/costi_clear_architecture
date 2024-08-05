@@ -54,7 +54,11 @@ class HomerResultConverter @Inject constructor() :
 
         val weeks = weeksOfMonth.toListWeeklyReport(response.daysOfWeek)
 
-        val currentWeek = weeksOfMonth.indexOfFirst { it.numWeek == getCurrentWeek() }
+        val currentWeek = if (weeksOfMonth.isNotEmpty()) {
+            weeksOfMonth.indexOfFirst { it.numWeek == getCurrentWeek() }.takeIf { it >= 0 } ?: weeksOfMonth.last().numWeek
+        } else {
+            0
+        }
 
         return HomeModel(
             idMonth = response.idMonth,
@@ -82,7 +86,7 @@ private fun List<WeekInfo>.toListWeeklyReport(daysOfWeek: List<DayOfWeek>): List
             val arrayDais = getDefaultListWeed()
             daysFilterForWeek.forEach { day ->
                 val index = day.dayOfWeek - 1
-                arrayDais[index] = arrayDais[day.dayOfWeek - 1].copy(value = day.total.toFloat())
+                arrayDais[index] = arrayDais[index].copy(value = day.total.toFloat())
             }
             mutableList.add(
                 WeeklyReport(

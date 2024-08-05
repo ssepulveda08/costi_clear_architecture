@@ -59,6 +59,7 @@ fun GraphicsSection(homeModel: HomeModel?) {
                         )
                     },
                     modifier = Modifier
+                        .padding(bottom = 8.dp)
                         .height(250.dp)
                 )
             }

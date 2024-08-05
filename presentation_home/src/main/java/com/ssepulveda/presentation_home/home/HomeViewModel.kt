@@ -71,14 +71,14 @@ class HomeViewModel @Inject constructor(
                     )
                 )
             ).collect {
-                /* val dialog = Dialog.DialogDefault(
+                 val dialog = Dialog.DialogDefault(
                          title = stringResolve.getString(R.string.title_successful_process),
                          description = stringResolve.getString(R.string.description_delete_bill),
                          textSuccess = stringResolve.getString(R.string.copy_ok),
                          onSuccess = ::closeDialogDeletedBill,
                          onCancel = ::closeDialogDeletedBill
-                 ) */
-                submitEventFlow(UIEvent.ShowSnackBar(stringResolve.getString(R.string.description_delete_bill)))
+                 )
+                submitEventFlow(UIEvent.ShowDialog(dialog))
             }
         }
     }
@@ -102,11 +102,12 @@ class HomeViewModel @Inject constructor(
     override fun initState(): UiState<HomeModel> = UiState.Loading
 
     private fun showDeletionConfirmation(bill: BillModel) {
+        val text = bill.description
         val dialog = Dialog.DialogDefault(
             title = stringResolve.getString(R.string.title_detele_bill),
             description = stringResolve.getString(
-                R.string.title_detele_description,
-                bill.description
+                R.string.title_delete_description,
+                text
             ),
             textSuccess = stringResolve.getString(R.string.copy_delete),
             textCancel = stringResolve.getString(R.string.copy_cancel),
