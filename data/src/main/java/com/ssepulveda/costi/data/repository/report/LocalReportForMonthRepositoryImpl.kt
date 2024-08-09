@@ -3,6 +3,7 @@ package com.ssepulveda.costi.data.repository.report
 import com.ssepulveda.costi.data.source.getDefaultMonths
 import com.ssepulveda.costi.data.source.local.dao.BillEntityDao
 import com.ssepulveda.costi.data.source.local.dao.ReportForMonthDao
+import com.ssepulveda.costi.data.source.local.entities.BillAndInformation
 import com.ssepulveda.costi.data.source.local.entities.BillEntity
 import com.ssepulveda.costi.data.source.local.entities.DayOfWeekReport
 import com.ssepulveda.costi.data.source.local.entities.ReportTotalForType
@@ -78,7 +79,7 @@ fun DayOfWeekReport.toDayOfWeek(): DayOfWeek = DayOfWeek(
     total = this.total,
 )
 
-fun BillEntity.toBill(): Bill = Bill(
+fun BillAndInformation.toBill(): Bill = Bill(
     id = this.id,
     subType = this.subType,
     description = this.description,

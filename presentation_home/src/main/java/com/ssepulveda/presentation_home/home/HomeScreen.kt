@@ -58,7 +58,6 @@ fun HomeScreen(
     navController: NavHostController,
 ) {
 
-
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
@@ -131,8 +130,6 @@ private fun Home(
                 )
             },
             contentWindowInsets = WindowInsets.safeDrawing, //WindowInsets.statusBars,
-            bottomBar = {
-            },
             floatingActionButton = {
                 ExtendedFloatingActionButton(
                     onClick = {

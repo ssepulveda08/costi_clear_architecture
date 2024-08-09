@@ -68,7 +68,6 @@ class LocalBillRepositoryImpl(
 
     override suspend fun deleteBill(bill: Bill) {
         bill.id?.let { id ->
-            //Log.d("POTATO", "DELETE BILL ${bill.id}")
             billEntityDao.deleteById(id)
         }
     }

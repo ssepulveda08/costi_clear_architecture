@@ -7,5 +7,6 @@ data class Bill(
     val value: Double,
     val month: Int,
     val recordDate: String,
-    val updateDate: String
+    val updateDate: String,
+
 )

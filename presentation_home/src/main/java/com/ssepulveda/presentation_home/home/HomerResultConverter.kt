@@ -85,7 +85,7 @@ private fun List<WeekInfo>.toListWeeklyReport(daysOfWeek: List<DayOfWeek>): List
         if (daysFilterForWeek.isNotEmpty()) {
             val arrayDais = getDefaultListWeed()
             daysFilterForWeek.forEach { day ->
-                val index = day.dayOfWeek - 1
+                val index = if (day.dayOfWeek == 0) 6 else day.dayOfWeek -1
                 arrayDais[index] = arrayDais[index].copy(value = day.total.toFloat())
             }
             mutableList.add(
