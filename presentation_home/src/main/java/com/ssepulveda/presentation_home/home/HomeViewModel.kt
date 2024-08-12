@@ -1,5 +1,6 @@
 package com.ssepulveda.presentation_home.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ssepulveda.costi.domain.entity.Bill
 import com.ssepulveda.costi.domain.useCase.bill.DeleteBillUseCase
@@ -12,6 +13,7 @@ import com.ssepulveda.presentation_common.state.UiState
 import com.ssepulveda.presentation_common.ui.StringResolve
 import com.ssepulveda.presentation_home.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -57,6 +59,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun deleteBill(bill: BillModel) {
+        Log.d("POTATO", "Remove View")
         viewModelScope.launch {
             deleteBillUseCase.execute(
                 DeleteBillUseCase.Request(
@@ -78,8 +81,18 @@ class HomeViewModel @Inject constructor(
                          onSuccess = ::closeDialogDeletedBill,
                          onCancel = ::closeDialogDeletedBill
                  )
-                submitEventFlow(UIEvent.ShowDialog(dialog))
+                //loadData()
+                //submitEventFlow(UIEvent.ShowSnackBar(stringResolve.getString(R.string.description_delete_bill)))
+                updateAndShowMessageRemoveBill()
             }
+        }
+    }
+
+    private fun updateAndShowMessageRemoveBill() {
+        viewModelScope.launch {
+            loadData()
+            Log.d("POTATO", "ShowMessage")
+            submitEventFlow(UIEvent.ShowSnackBar(stringResolve.getString(R.string.description_delete_bill)))
         }
     }
 

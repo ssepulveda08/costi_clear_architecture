@@ -1,24 +1,28 @@
 package com.ssepulveda.presentation_common.state
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Snackbar
+import android.annotation.SuppressLint
+import android.util.Log
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import com.ssepulveda.presentation_common.ui.DialogController
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun CommonUIEvent(uiEvent: UIEvent?, snackBarHostState: SnackbarHostState, dismiss: () -> Unit) {
     val scope = rememberCoroutineScope()
-    if (uiEvent is UIEvent.ShowSnackBar) {
-        //CustomSnackBar(message = uiEvent.message, dismiss)
+    if (uiEvent is UIEvent.ShowSnackBar && snackBarHostState.currentSnackbarData == null) {
+        Log.d("POTATO", "CommonUIEvent ShowSnackBar $snackBarHostState")
         scope.launch {
-            snackBarHostState.showSnackbar(message = uiEvent.message)
+            snackBarHostState.showSnackbar(
+                message = uiEvent.message,
+                actionLabel = "OK",
+                duration = SnackbarDuration.Short
+            ).apply {
+               dismiss.invoke()
+            }
         }
     }
 
@@ -26,18 +30,3 @@ fun CommonUIEvent(uiEvent: UIEvent?, snackBarHostState: SnackbarHostState, dismi
         DialogController(uiEvent.dialog)
     }
 }
-
-/*@Composable
-private fun CustomSnackBar(message: String, dismiss: () -> Unit) {
-    // TODO UPDATE CHANGE
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Bottom
-    ) {
-        Snackbar(
-
-        ) {
-            Text(text = message)
-        }
-    }
-}*/

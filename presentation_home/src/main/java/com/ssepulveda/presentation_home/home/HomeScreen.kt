@@ -1,5 +1,6 @@
 package com.ssepulveda.presentation_home.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DrawerValue
@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -30,12 +29,12 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Green
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -43,6 +42,7 @@ import com.ssepulveda.presentation_common.inputs.DetailInput
 import com.ssepulveda.presentation_common.navigation.NavRoutes
 import com.ssepulveda.presentation_common.state.CommonScreen
 import com.ssepulveda.presentation_common.state.CommonUIEvent
+import com.ssepulveda.presentation_common.state.UIEvent
 import com.ssepulveda.presentation_common.ui.CustomToolbar
 import com.ssepulveda.presentation_home.R
 import com.ssepulveda.presentation_home.home.ui.GraphicsSection
@@ -84,9 +84,20 @@ fun HomeScreen(
         }
     }
 
-    viewModel.uiEvent.collectAsState().value.let {
-        CommonUIEvent(it, snackBarHostState) {
-            viewModel.hideEventFlow()
+    var uiEvent by remember {
+        mutableStateOf<UIEvent?>(null)
+    }
+
+    CommonUIEvent(uiEvent, snackBarHostState) {
+        viewModel.hideEventFlow()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collectLatest {
+            if (uiEvent != it) {
+                Log.d("POTATO", "Collect UIEVENT $it")
+                uiEvent = it
+            }
         }
     }
 
@@ -102,9 +113,6 @@ private fun Home(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    //val uiEvent by stable
-
-    //val uiEvent = viewModel.uiEvent as MutableState<UIEvent>
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -131,18 +139,21 @@ private fun Home(
             },
             contentWindowInsets = WindowInsets.safeDrawing, //WindowInsets.statusBars,
             floatingActionButton = {
-                ExtendedFloatingActionButton(
-                    onClick = {
-                        viewModel.submitSingleEvent(
-                            HomeSingleEvent.OpenAddBill(
-                                NavRoutes.Bill_Add.route
+                if (snackBarHostState.currentSnackbarData == null ) {
+                    ExtendedFloatingActionButton(
+                        onClick = {
+                            viewModel.submitSingleEvent(
+                                HomeSingleEvent.OpenAddBill(
+                                    NavRoutes.Bill_Add.route
+                                )
                             )
-                        )
-                    },
-                    icon = { Icon(Icons.Filled.Add, "Extended floating action button.") },
-                    text = { Text(text = stringResource(id = R.string.copy_add_bill)) },
-                )
-            },snackbarHost = {
+                        },
+                        icon = { Icon(Icons.Filled.Add, "Extended floating action button.") },
+                        text = { Text(text = stringResource(id = R.string.copy_add_bill)) },
+                    )
+                }
+            }
+            ,snackbarHost = {
                 SnackbarHost(snackBarHostState)
             },
         ) { innerPadding ->
