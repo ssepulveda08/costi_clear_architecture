@@ -17,28 +17,28 @@ class GetHomeInformationUseCase(
     private val localReportForMonthRepository: LocalReportForMonthRepository,
 ) : UseCase<GetHomeInformationUseCase.Request, GetHomeInformationUseCase.Response>(configuration) {
 
-    object Request : UseCase.Request
+    data class Request(val accountId: Int) : UseCase.Request
 
     data class Response(val model: HomeScreen) : UseCase.Response
 
     @OptIn(FlowPreview::class)
     override fun process(request: Request): Flow<Response> =
         localConfigurationRepository.getMonthSet().flatMapConcat { idMonth ->
-            localBillRepository.getAllBillsByMonth(idMonth).map {
+            localBillRepository.getAllBillsByMonth(idMonth, request.accountId).map {
                 HomeScreen(
                     idMonth,
                     0.0,
                     it ?: listOf()
                 )
             }.flatMapConcat { model ->
-                localReportForMonthRepository.getReportForMonth(model.idMonth).map {
+                localReportForMonthRepository.getReportForMonth(model.idMonth, request.accountId).map {
                     model.copy(
                         dataReportType = it.reportForType,
                         totalMonth = it.total ?: 0.0,
                         daysOfWeek = it.daysOfWeek
                     )
                 }.flatMapConcat { modelEnd ->
-                    localReportForMonthRepository.getCurrentWeekReport(modelEnd.idMonth).map {
+                    localReportForMonthRepository.getCurrentWeekReport(modelEnd.idMonth, request.accountId).map {
                         Response(modelEnd.copy(dataReportWeed = it ?: listOf()))
                     }
                 }

@@ -78,4 +78,5 @@ abstract class MviViewModel<T : Any, S : UiState<T>, A : UiAction, E : UiSingleE
         }
     }
 
+
 }

@@ -7,7 +7,7 @@ interface LocalBillRepository {
 
     fun getBillById(billId: Int): Flow<Bill?>
 
-    fun getAllBillsByMonth(month: Int): Flow<List<Bill>?>
+    fun getAllBillsByMonth(month: Int, accountId: Int): Flow<List<Bill>?>
 
     suspend fun addBill(bill: Bill): Flow<Long>
 

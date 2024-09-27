@@ -27,6 +27,8 @@ fun CommonUIEvent(uiEvent: UIEvent?, snackBarHostState: SnackbarHostState, dismi
     }
 
     if (uiEvent is UIEvent.ShowDialog) {
-        DialogController(uiEvent.dialog)
+        DialogController<Unit>(uiEvent.dialog)
     }
+
 }
+

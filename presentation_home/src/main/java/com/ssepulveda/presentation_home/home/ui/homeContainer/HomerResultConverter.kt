@@ -1,7 +1,6 @@
-package com.ssepulveda.presentation_home.home
+package com.ssepulveda.presentation_home.home.ui.homeContainer
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.ssepulveda.costi.data.source.getDefaultMonths
 import com.ssepulveda.costi.domain.entity.CurrentWeekReport

@@ -24,6 +24,8 @@ class AddBillViewModel @Inject constructor(
     private val converter: TypeAndSubTypeConverter
 ) : MviViewModel<FormInput, UiState<FormInput>, AddBillUiAction, AddBillSingleEvent>() {
 
+    var accountId = 7777
+
     private fun loadTypesAndSubTypes() {
         viewModelScope.launch {
             getTypesAndSubTypesUseCase.execute(GetTypesAndSubTypesUseCase.Request).map {
@@ -42,16 +44,18 @@ class AddBillViewModel @Inject constructor(
                         subType = input.subTypeSelect?.id ?: 0,
                         description = input.description,
                         value = input.value.toDouble(),
-                        month = 0 ,
+                        month = 0,
                         recordDate = "",
                         updateDate = "",
+                        accountId = accountId,
                     )
                 )
             ).collect {
-                when(it) {
+                when (it) {
                     is Result.Error -> {
                         submitState(UiState.Error(it.exception.localizedMessage.orEmpty()))
                     }
+
                     is Result.Success -> {
                         submitSingleEvent(AddBillSingleEvent.Close)
                     }

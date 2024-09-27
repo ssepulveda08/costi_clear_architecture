@@ -1,6 +1,5 @@
 package com.ssepulveda.costi.domain.useCase.bill
 
-import android.util.Log
 import com.ssepulveda.costi.domain.entity.Bill
 import com.ssepulveda.costi.domain.repository.LocalBillRepository
 import com.ssepulveda.costi.domain.useCase.UseCase

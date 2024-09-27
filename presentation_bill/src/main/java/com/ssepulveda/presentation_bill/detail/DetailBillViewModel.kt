@@ -31,10 +31,10 @@ class DetailBillViewModel @Inject constructor(
         viewModelScope.launch {
             getTypesAndSubTypesUseCase.execute(GetTypesAndSubTypesUseCase.Request)
                 .collect { result ->
-                    convertResult(result) {
+                    convertResult(result) { response ->
                         val form = FormInput(
-                            it.types.map { ItemDropdown(it.id, it.name) },
-                            it.subTypes.map { ItemDropdown(it.id ?: 0, it.name, it.type) },
+                            response.types.map { ItemDropdown(it.id, it.name) },
+                            response.subTypes.map { ItemDropdown(it.id ?: 0, it.name, it.type) },
                             idBill = input.id.toInt(),
                         )
                         getBill(form)
@@ -63,6 +63,7 @@ class DetailBillViewModel @Inject constructor(
                                 month = bill.month,
                                 recordDate = bill.recordDate,
                                 updateDate = bill.updateDate,
+                                // TODO ADD ACCOUNT ID
                             )
                             submitState(UiState.Success(newForm))
                         }

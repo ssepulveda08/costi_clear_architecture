@@ -4,11 +4,14 @@ import androidx.compose.runtime.Composable
 import com.ssepulveda.modal_dialogs.entities.Dialog
 import com.ssepulveda.modal_dialogs.entities.DialogFactory
 
+
 @Composable
-fun DialogController(
-    dialog: Dialog?
+fun <T> DialogController(
+    dialog: Dialog?,
+    onClickCancel: () -> Unit = {},
+    onClickSuccess: (T) -> Unit = {}
 ) {
    if (dialog != null) {
-       DialogFactory(dialog)
+       DialogFactory<T>(dialog)
    }
 }

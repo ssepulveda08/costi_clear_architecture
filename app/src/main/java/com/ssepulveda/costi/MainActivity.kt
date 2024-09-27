@@ -1,7 +1,6 @@
 package com.ssepulveda.costi
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -91,11 +90,15 @@ fun App(navController: androidx.navigation.NavHostController) {
             CustomWebView(url = NavRoutes.WebView.fromEntry(it), navController)
         }
         composable(
-            route = NavRoutes.Bill_Add.route,
-            arguments = NavRoutes.Bill_Add.arguments
+            route = NavRoutes.AddBill.route,
+            arguments = NavRoutes.AddBill.arguments
         ) {
             val viewModel = hiltViewModel<AddBillViewModel>()
-            AddBillScreen(viewModel, navController)
+            AddBillScreen(
+                viewModel,
+                navController,
+                NavRoutes.AddBill.fromEntry(it)
+            )
         }
         composable(
             route = NavRoutes.Months.route,

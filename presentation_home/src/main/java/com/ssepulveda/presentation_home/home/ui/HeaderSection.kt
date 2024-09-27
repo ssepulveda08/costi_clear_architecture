@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.ssepulveda.presentation_common.ui.orZero
 import com.ssepulveda.presentation_common.ui.toCurrencyFormat
 import com.ssepulveda.presentation_home.R
-import com.ssepulveda.presentation_home.home.HomeModel
+import com.ssepulveda.presentation_home.home.ui.homeContainer.HomeModel
 
 @Composable
 fun HeaderSection(homeModel: HomeModel?) {

@@ -5,6 +5,7 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.ssepulveda.presentation_common.inputs.AddBillInput
 import com.ssepulveda.presentation_common.inputs.DetailInput
 import com.ssepulveda.presentation_common.inputs.MonthInput
 
@@ -13,7 +14,7 @@ private const val ROUTE_WELCOME = "welcome"
 private const val ROUTE_HOME = "home"
 private const val ROUTE_MONTHS = "months"
 private const val ROUTE_BILL = "bill"
-private const val ROUTE_BILL_ADD = "bill/add"
+private const val ROUTE_BILL_ADD = "bill/add/%s"
 private const val ROUTE_MONTH_DETAIL= "month/%s"
 private const val ROUTE_BILLS = "bills"
 private const val ROUTE_BILLS_FOR_MONTH = "bills/%s"
@@ -21,6 +22,7 @@ private const val ROUTE_BILL_DETAIL = "bill/%s"
 private const val ROUTE_WEB_VIEW = "webView/%s"
 private const val ARG_MONTH_ID = "monthId"
 private const val ARG_BILL_ID = "billID"
+private const val ARG_ACCOUNT_ID = "accountId"
 private const val ARG_URL = "url"
 
 sealed class NavRoutes(
@@ -37,7 +39,21 @@ sealed class NavRoutes(
 
     data object Bill : NavRoutes(ROUTE_BILL)
 
-    data object Bill_Add : NavRoutes(ROUTE_BILL_ADD)
+    //data object Bill_Add : NavRoutes(ROUTE_BILL_ADD)
+
+    data object AddBill : NavRoutes(
+        route = String.format(ROUTE_BILL_ADD, "{$ARG_ACCOUNT_ID}"),
+        arguments = listOf(navArgument(ARG_ACCOUNT_ID) {
+            type = NavType.IntType
+        })
+    ) {
+
+        fun routeForAccount(input: AddBillInput) = String.format(ROUTE_BILL_ADD, input.id)
+
+        fun fromEntry(entry: NavBackStackEntry): AddBillInput {
+            return AddBillInput(entry.arguments?.getInt(ARG_ACCOUNT_ID) ?: 0)
+        }
+    }
 
     data object DetailBill : NavRoutes(
         route = String.format(ROUTE_BILL_DETAIL, "{$ARG_BILL_ID}"),

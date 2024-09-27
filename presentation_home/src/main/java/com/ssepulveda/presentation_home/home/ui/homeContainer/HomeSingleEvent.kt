@@ -1,4 +1,4 @@
-package com.ssepulveda.presentation_home.home
+package com.ssepulveda.presentation_home.home.ui.homeContainer
 
 import com.ssepulveda.presentation_common.state.UiSingleEvent
 

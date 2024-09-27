@@ -18,7 +18,8 @@ class GetAllBillsByMonthUseCase(
     data class Response(val types: List<Bill>) : UseCase.Response
 
     override fun process(request: Request): Flow<Response> {
-        return localBillRepository.getAllBillsByMonth(request.month).map {
+        //TODO CHANGE
+        return localBillRepository.getAllBillsByMonth(request.month, 77).map {
             Response(it ?: listOf())
         }
     }

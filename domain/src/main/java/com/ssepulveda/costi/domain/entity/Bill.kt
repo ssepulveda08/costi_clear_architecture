@@ -8,5 +8,5 @@ data class Bill(
     val month: Int,
     val recordDate: String,
     val updateDate: String,
-
+    val accountId: Int = 7777
 )

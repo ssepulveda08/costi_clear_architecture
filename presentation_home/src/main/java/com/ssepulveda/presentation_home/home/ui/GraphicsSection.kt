@@ -17,8 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ssepulveda.presentation_home.home.HomeModel
-import com.ssepulveda.presentation_home.home.WeeklyReport
+import com.ssepulveda.presentation_home.home.ui.homeContainer.HomeModel
+import com.ssepulveda.presentation_home.home.ui.homeContainer.WeeklyReport
 import com.ssepulveda.presentation_home.home.ui.charts.BarChart
 import com.ssepulveda.presentation_home.home.ui.charts.PieChart
 import com.ssepulveda.presentation_home.home.utils.toChangeFormatter

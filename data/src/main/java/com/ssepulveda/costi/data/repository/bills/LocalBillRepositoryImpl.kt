@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import com.ssepulveda.costi.data.source.local.dao.BillEntityDao
 import com.ssepulveda.costi.data.source.local.entities.BillEntity
+import com.ssepulveda.costi.domain.entity.Account
 import com.ssepulveda.costi.domain.entity.Bill
 import com.ssepulveda.costi.domain.repository.LocalBillRepository
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +20,7 @@ class LocalBillRepositoryImpl(
     override fun getBillById(billId: Int): Flow<Bill?> =
         billEntityDao.getBillByID(billId).map {
             Bill(
-                id = it.id ?:0,
+                id = it.id ?: 0,
                 subType = it.subType,
                 description = it.description,
                 value = it.value,
@@ -29,8 +30,8 @@ class LocalBillRepositoryImpl(
             )
         }
 
-    override fun getAllBillsByMonth(month: Int): Flow<List<Bill>> =
-        billEntityDao.getAllByMonth(month).map { list ->
+    override fun getAllBillsByMonth(month: Int, accountId: Int): Flow<List<Bill>> {
+        return billEntityDao.getAllByMonth(month, accountId).map { list ->
             list?.map {
                 Bill(
                     id = it.id ?: 0,
@@ -43,6 +44,8 @@ class LocalBillRepositoryImpl(
                 )
             } ?: listOf()
         }
+    }
+
 
     override suspend fun addBill(bill: Bill): Flow<Long> {
 
@@ -51,13 +54,14 @@ class LocalBillRepositoryImpl(
         } else {
             Date()
         }
-        return flow<Long> {
+        return flow {
             val id = billEntityDao.insert(
                 BillEntity(
                     description = bill.description,
                     subType = bill.subType,
                     value = bill.value,
                     month = bill.month,
+                    accountId = bill.accountId,
                     recordDate = date.toString(),
                     updateDate = date.toString(),
                 )
@@ -79,6 +83,7 @@ class LocalBillRepositoryImpl(
             subType = bill.subType,
             value = bill.value,
             month = bill.month,
+            accountId = 0, // TODO CHANGE ADD ACCOUNT
             recordDate = bill.recordDate,
             updateDate = bill.updateDate
         )

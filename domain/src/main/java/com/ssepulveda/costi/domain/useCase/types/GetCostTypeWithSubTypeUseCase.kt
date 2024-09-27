@@ -12,7 +12,7 @@ class GetCostTypeWithSubTypeUseCase(
     configuration: Configuration,
     private val localCostTypeRepository: LocalCostTypeRepository,
     private val localSubTypeRepository: LocalSubTypeRepository,
-) : UseCase<GetCostTypeWithSubTypeUseCase.Request, GetCostTypeWithSubTypeUseCase.Response>(configuration){
+) : UseCase<GetCostTypeWithSubTypeUseCase.Request, GetCostTypeWithSubTypeUseCase. Response>(configuration){
 
     object Request : UseCase.Request
 

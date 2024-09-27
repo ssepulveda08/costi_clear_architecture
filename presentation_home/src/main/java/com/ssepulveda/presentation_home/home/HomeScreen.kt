@@ -1,24 +1,21 @@
+@file:Suppress("NAME_SHADOWING")
+
 package com.ssepulveda.presentation_home.home
 
-import android.util.Log
-import androidx.compose.foundation.background
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -37,20 +34,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.HasDefaultViewModelProviderFactory
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
-import com.ssepulveda.presentation_common.inputs.DetailInput
-import com.ssepulveda.presentation_common.navigation.NavRoutes
 import com.ssepulveda.presentation_common.state.CommonScreen
 import com.ssepulveda.presentation_common.state.CommonUIEvent
 import com.ssepulveda.presentation_common.state.UIEvent
 import com.ssepulveda.presentation_common.ui.CustomToolbar
 import com.ssepulveda.presentation_home.R
-import com.ssepulveda.presentation_home.home.ui.GraphicsSection
-import com.ssepulveda.presentation_home.home.ui.HeaderSection
-import com.ssepulveda.presentation_home.home.ui.ItemBill
+import com.ssepulveda.presentation_home.home.ui.CarouselOfAccounts
+import com.ssepulveda.presentation_home.home.ui.homeContainer.HomeContainer
+import com.ssepulveda.presentation_home.home.ui.homeContainer.HomeContainerViewModel
+import com.ssepulveda.presentation_home.home.ui.homeContainer.HomeSingleEvent
 import com.ssepulveda.presentation_menu.Menu
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun HomeScreen(
@@ -67,9 +70,8 @@ fun HomeScreen(
         CommonScreen(state = state) {
             Home(
                 viewModel,
-                it,
                 navController,
-                snackBarHostState
+                snackBarHostState,
             )
         }
     }
@@ -78,6 +80,7 @@ fun HomeScreen(
         viewModel.singleEventFlow.collectLatest {
             when (it) {
                 is HomeSingleEvent.OpenAddBill -> {
+                    //send account id for param
                     navController.navigate(it.navRoute)
                 }
             }
@@ -95,24 +98,25 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collectLatest {
             if (uiEvent != it) {
-                Log.d("POTATO", "Collect UIEVENT $it")
                 uiEvent = it
             }
         }
     }
-
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun Home(
     viewModel: HomeViewModel,
-    homeModel: HomeModel?,
     navController: NavHostController,
     snackBarHostState: SnackbarHostState,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val tabs = viewModel.tabs.collectAsState()
+    val containerViewModel = hiltViewModel<HomeContainerViewModel>()
+    containerViewModel.setAccountID(tabs.value.firstOrNull { it.selected })
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -139,87 +143,55 @@ private fun Home(
             },
             contentWindowInsets = WindowInsets.safeDrawing, //WindowInsets.statusBars,
             floatingActionButton = {
-                if (snackBarHostState.currentSnackbarData == null ) {
+                if (snackBarHostState.currentSnackbarData == null) {
                     ExtendedFloatingActionButton(
                         onClick = {
-                            viewModel.submitSingleEvent(
+                            /*viewModel.submitSingleEvent(
                                 HomeSingleEvent.OpenAddBill(
                                     NavRoutes.Bill_Add.route
                                 )
-                            )
+                            )*/
+                            viewModel.openAddBill()
                         },
                         icon = { Icon(Icons.Filled.Add, "Extended floating action button.") },
                         text = { Text(text = stringResource(id = R.string.copy_add_bill)) },
                     )
                 }
-            }
-            ,snackbarHost = {
+            },
+            snackbarHost = {
                 SnackbarHost(snackBarHostState)
             },
         ) { innerPadding ->
-
-            LazyColumn(
-                contentPadding = innerPadding,
+            Column(
+                modifier = Modifier.padding(innerPadding),
             ) {
-                item {
-                    Column(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background),
-                    ) {
-
-                        Spacer(modifier = Modifier.padding(4.dp))
-                        HeaderSection(homeModel)
-                        Spacer(modifier = Modifier.padding(4.dp))
-                        HorizontalDivider(
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                            color = MaterialTheme.colorScheme.inversePrimary, thickness = 0.5.dp
-                        )
-                        Spacer(modifier = Modifier.padding(8.dp))
-
-                        GraphicsSection(homeModel)
-
-                        Spacer(modifier = Modifier.padding(8.dp))
-
-                        HorizontalDivider(
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                            color = MaterialTheme.colorScheme.inversePrimary,
-                            thickness = 0.5.dp
-                        )
-                        Text(
-                            text = stringResource(id = R.string.copy_list_bills),
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .padding(vertical = 4.dp)
-                                .fillMaxHeight(),
-                            style = MaterialTheme.typography.titleSmall,
-                        )
-
-                        Spacer(modifier = Modifier.padding(4.dp))
+                CarouselOfAccounts(
+                    tabs.value,
+                    onClickTab = { tab ->
+                        //val page = tabs.value.indexOfFirst { it.id == tab.id } ?: 0
+                        viewModel.submitAction(HomeUiAction.SelectTab(tab))
+                       // containerViewModel.setAccountID(tab.id)
+                        //id = tab.id
+                        /*scope.launch {
+                           // pagerState.animateScrollToPage(page = page)
+                        }*/
+                    },
+                    onAddTab = {
+                        viewModel.submitAction(HomeUiAction.OpenDialogAddAccount)
                     }
+                )
 
-                }
-                items(homeModel?.bills ?: listOf()) {
-                    ItemBill(
-                        it,
-                        homeModel?.localCode ?: "COP",
-                        onClick = { billId ->
-                            navController.navigate(
-                                NavRoutes.DetailBill.routeForDetail(
-                                    DetailInput(
-                                        billId.toLong()
-                                    )
-                                )
-                            )
-                        },
-                        onDelete = { model ->
-                            viewModel.submitAction(HomeUiAction.DeleteBill(model))
-                        }
-                    )
-                }
-                item {
-                    Spacer(modifier = Modifier.padding(30.dp))
-                }
+                /* HorizontalPager(
+                     pagerState,
+                     userScrollEnabled = false
+                 ) { */
+
+                HomeContainer(
+                    containerViewModel, navController
+                )
+                //} /
             }
+
         }
     }
 }

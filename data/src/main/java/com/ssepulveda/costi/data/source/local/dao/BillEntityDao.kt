@@ -19,8 +19,9 @@ interface BillEntityDao {
             "ON bill.subType = subType.id  \n" +
             "INNER JOIN TypeOfExpense as type\n" +
             "ON subType.type = type.id\n" +
-            "WHERE month = :month ORDER BY recordDate DESC" )
-    fun getAllByMonth(month: Int): Flow<List<BillAndInformation>?>
+            "WHERE month = :month AND accountId in(:accountId) " +
+            "ORDER BY recordDate DESC" )
+    fun getAllByMonth(month: Int, accountId: Int): Flow<List<BillAndInformation>?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(bill: BillEntity): Long

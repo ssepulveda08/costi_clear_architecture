@@ -1,5 +1,6 @@
 package com.ssepulveda.costi.di
 
+import com.ssepulveda.costi.domain.repository.AccountRepository
 import com.ssepulveda.costi.domain.repository.LocalBillRepository
 import com.ssepulveda.costi.domain.repository.LocalConfigurationRepository
 import com.ssepulveda.costi.domain.repository.LocalCostTypeRepository
@@ -18,6 +19,8 @@ import com.ssepulveda.costi.domain.useCase.config.SaveCurrentMonthUseCase
 import com.ssepulveda.costi.domain.useCase.config.SaveInitialConfigurationByDefaultUseCase
 import com.ssepulveda.costi.domain.useCase.config.UpdateInitialConfigurationUseCase
 import com.ssepulveda.costi.domain.useCase.UseCase
+import com.ssepulveda.costi.domain.useCase.account.AddAccountUseCase
+import com.ssepulveda.costi.domain.useCase.account.GetAccountsByMonthUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -72,10 +75,14 @@ class UseCaseModule {
         configuration: UseCase.Configuration,
         localCostTypeRepository: LocalCostTypeRepository,
         localSubTypeRepository: LocalSubTypeRepository,
+        accountRepository: AccountRepository,
+        localConfigurationRepository: LocalConfigurationRepository,
     ): SaveInitialConfigurationByDefaultUseCase = SaveInitialConfigurationByDefaultUseCase(
         configuration,
         localCostTypeRepository,
-        localSubTypeRepository
+        localSubTypeRepository,
+        accountRepository,
+        localConfigurationRepository,
     )
 
     @Provides
@@ -144,6 +151,28 @@ class UseCaseModule {
     ): DeleteBillUseCase = DeleteBillUseCase(
         configuration,
         localBillRepository,
+    )
+
+    @Provides
+    fun provideGetAccountsByMonthUseCase(
+        configuration: UseCase.Configuration,
+        localConfigurationRepository: LocalConfigurationRepository,
+        accountRepository: AccountRepository,
+    ): GetAccountsByMonthUseCase = GetAccountsByMonthUseCase(
+        configuration,
+        localConfigurationRepository,
+        accountRepository,
+    )
+
+    @Provides
+    fun provideAddAccountUseCase(
+        configuration: UseCase.Configuration,
+        localConfigurationRepository: LocalConfigurationRepository,
+        accountRepository: AccountRepository,
+    ): AddAccountUseCase = AddAccountUseCase(
+        configuration,
+        localConfigurationRepository,
+        accountRepository,
     )
 
 }

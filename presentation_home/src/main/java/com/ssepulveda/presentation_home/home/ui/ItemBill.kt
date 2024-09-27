@@ -33,7 +33,7 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ssepulveda.presentation_common.ui.toCurrencyFormat
-import com.ssepulveda.presentation_home.home.BillModel
+import com.ssepulveda.presentation_home.home.ui.homeContainer.BillModel
 import kotlin.random.Random
 
 @Composable

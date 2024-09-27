@@ -27,9 +27,9 @@ class LocalReportForMonthRepositoryImpl(
 ) : LocalReportForMonthRepository {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getReportForMonth(month: Int): Flow<ReportForMonth> =
-        reportForMonthDao.getTotalByMonth(month).flatMapConcat { totalMonth ->
-            reportForMonthDao.getReportForMonth(month).flatMapConcat { list ->
+    override fun getReportForMonth(month: Int, accountId: Int): Flow<ReportForMonth> =
+        reportForMonthDao.getTotalByMonthAndAccount(month, accountId).flatMapConcat { totalMonth ->
+            reportForMonthDao.getReportForMonth(month, accountId).flatMapConcat { list ->
                  reportForMonthDao.getWeeksReportForMonth(month).map { days ->
                      ReportForMonth(
                          total = totalMonth ?: 0.0,
@@ -40,9 +40,9 @@ class LocalReportForMonthRepositoryImpl(
             }
         }
 
-    override fun getCurrentWeekReport(month: Int): Flow<List<CurrentWeekReport>> =
+    override fun getCurrentWeekReport(month: Int, accountId: Int): Flow<List<CurrentWeekReport>> =
         reportForMonthDao.getTotalByMonth(month).flatMapConcat { totalMonth ->
-            reportForMonthDao.getReportForWeek(month).map {
+            reportForMonthDao.getReportForWeek(month, accountId).map {
                 it.map { week ->
                     CurrentWeekReport(
                         week.dayOfWeek ?: 0,
@@ -60,7 +60,7 @@ class LocalReportForMonthRepositoryImpl(
 
     override fun getReportMonthDetail(month: Int): Flow<ReportMonthDetail?> = flow {
         getDefaultMonths().firstOrNull { it.id == month }?.let { model ->
-            billEntityDao.getAllByMonth(month).collect {list ->
+            billEntityDao.getAllByMonth(month, 7777).collect { list -> // todo change
                 val response = ReportMonthDetail(
                     model,
                     list?.map { it.toBill() }

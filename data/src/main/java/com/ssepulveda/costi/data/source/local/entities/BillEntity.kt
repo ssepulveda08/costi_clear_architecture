@@ -1,5 +1,6 @@
 package com.ssepulveda.costi.data.source.local.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -21,6 +22,7 @@ data class BillEntity(
     val description: String,
     val value: Double,
     val month: Int,
+    @ColumnInfo(defaultValue = "7777") val accountId: Int,
     val recordDate: String,
     val updateDate: String,
 )
