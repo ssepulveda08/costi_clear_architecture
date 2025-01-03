@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,14 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.NavHostController
 import com.ssepulveda.presentation_common.navigation.NavRoutes
 
 @Composable
 fun Menu(
-    navController: NavHostController?,
+    onNavigate: (route: String) -> Unit
 ) {
-
     ConstraintLayout {
         val (body, footer) = createRefs()
         Column(
@@ -63,12 +60,13 @@ fun Menu(
             ItemMenu(
                 stringResource(R.string.copy_report_for_month)
             ) {
-                navController?.navigate(NavRoutes.Months.route)
+                //navController?.navigate(NavRoutes.Months.route)
+                onNavigate(NavRoutes.Months.route)
             }
             ItemMenu(
                 stringResource(R.string.copy_github)
             ) {
-                navController?.navigate(
+                onNavigate(
                     NavRoutes.WebView.routeForUrl(
                         url = "GITHUB"
                     )
@@ -77,7 +75,7 @@ fun Menu(
             ItemMenu(
                 stringResource(R.string.copy_buy_me_coffee)
             ) {
-                navController?.navigate(
+                onNavigate(
                     NavRoutes.WebView.routeForUrl(
                         url = "LINKEDIN"
                     )
@@ -177,7 +175,9 @@ private fun ItemMenu(
 @Composable
 private fun PreviewMenu() {
     MaterialTheme {
-        Menu(null)
+        Menu {
+
+        }
     }
 }
 

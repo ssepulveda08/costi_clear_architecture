@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun MonthDetailScreen(
     month: MonthInput,
     viewModel: MonthDetailViewModel,
-    navController: NavHostController?
+    onBack: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         viewModel.submitAction(MonthDetailAction.LoadData(month.monthId))
@@ -38,7 +38,7 @@ fun MonthDetailScreen(
     viewModel.uiStateFlow.collectAsState().value.let { state ->
         CommonScreen(state = state) {
             it?.let {
-                DetailView(it, navController)
+                DetailView(it, onBack)
             }
         }
     }
@@ -48,18 +48,16 @@ fun MonthDetailScreen(
 
         }
     }
-
-    /* viewModel.showSingleDialog.collectAsState().value.let { dialog ->
-         DialogController(dialog)
-     }*/
-
 }
 
 @Composable
-private fun DetailView(monthDetailModel: MonthDetailModel, navController: NavHostController?) {
+private fun DetailView(
+    monthDetailModel: MonthDetailModel,
+    onBack: () -> Unit
+) {
     Scaffold(
         topBar = {
-            SingleToolbar(title = monthDetailModel.name, navController = navController)
+            SingleToolbar(title = monthDetailModel.name, onBack)
         },
         contentWindowInsets = WindowInsets.safeDrawing,
         bottomBar = {
@@ -120,6 +118,9 @@ private fun ItemBillComponent(item: ItemBill) {
 @Preview
 private fun PreviewMonthDetail() {
     MaterialTheme {
-        MonthDetailScreen(MonthInput(4), viewModel(), null)
+        MonthDetailScreen(MonthInput(4), viewModel(), onBack =  {
+
+        }
+        )
     }
 }

@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 @Composable
 fun SingleToolbar(
     title: String,
-    navController: NavController?
+    onBack: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -33,7 +33,7 @@ fun SingleToolbar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = { navController?.navigateUp() }) {
+            IconButton(onClick = { onBack() }) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "Localized description"

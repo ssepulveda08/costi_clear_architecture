@@ -1,7 +1,6 @@
 package com.ssepulveda.presentation_bill.ui
 
 import android.os.Build
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -32,7 +31,6 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.ssepulveda.presentation_bill.R
 import com.ssepulveda.presentation_bill.add.ItemDropdown
 import com.ssepulveda.presentation_common.ui.SingleToolbar
@@ -41,11 +39,11 @@ import com.ssepulveda.presentation_common.ui.SingleToolbar
 @Composable
 fun FormBillComponent(
     input: FormInput,
-    navController: NavController,
     isEditable: Boolean,
     title: String,
     information: @Composable ColumnScope.() -> Unit = {},
-    onCompleted: (FormInput) -> Unit
+    onCompleted: (FormInput) -> Unit,
+    onBack: () -> Unit
 ) {
 
     var mutableInput by remember {
@@ -63,7 +61,7 @@ fun FormBillComponent(
         topBar = {
             SingleToolbar(
                 title, //stringResource(R.string.title_edit_bill),
-                navController
+                onBack
             )
         }
     ) { innerPadding ->

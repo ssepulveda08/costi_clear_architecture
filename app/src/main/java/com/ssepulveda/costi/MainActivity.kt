@@ -75,8 +75,12 @@ fun App(navController: androidx.navigation.NavHostController) {
             arguments = NavRoutes.Home.arguments
         ) {
             val viewModel = hiltViewModel<HomeViewModel>()
-            HomeScreen(viewModel, navController)
+            HomeScreen(viewModel) {
+                navController.navigate(it)
+            }
         }
+
+
         composable(
             route = NavRoutes.Bills.route,
             arguments = NavRoutes.Bills.arguments
@@ -87,7 +91,7 @@ fun App(navController: androidx.navigation.NavHostController) {
             route = NavRoutes.WebView.route,
             arguments = NavRoutes.WebView.arguments
         ) {
-           // Log.d("POTATO", NavRoutes.WebView.fromEntry(it))
+            // Log.d("POTATO", NavRoutes.WebView.fromEntry(it))
             CustomWebView(url = NavRoutes.WebView.fromEntry(it), navController)
         }
         composable(
@@ -95,14 +99,20 @@ fun App(navController: androidx.navigation.NavHostController) {
             arguments = NavRoutes.Bill_Add.arguments
         ) {
             val viewModel = hiltViewModel<AddBillViewModel>()
-            AddBillScreen(viewModel, navController)
+            AddBillScreen(viewModel) {
+                navController.navigateUp()
+            }
         }
         composable(
             route = NavRoutes.Months.route,
             arguments = NavRoutes.Months.arguments
         ) {
             val viewModel = hiltViewModel<ReportViewModel>()
-            ReportScreen(viewModel, navController)
+            ReportScreen(viewModel, onNavigate = {
+                navController.navigate(it)
+            }, onBack = {
+                navController.navigateUp()
+            })
         }
         composable(
             route = NavRoutes.DetailBill.route,
@@ -111,8 +121,10 @@ fun App(navController: androidx.navigation.NavHostController) {
             val viewModel = hiltViewModel<DetailBillViewModel>()
             DetailBillScreen(
                 viewModel = viewModel,
-                input =  NavRoutes.DetailBill.fromEntry(it),
-                navController = navController
+                input = NavRoutes.DetailBill.fromEntry(it),
+                onBack = {
+                    navController.navigateUp()
+                }
             )
         }
         composable(
@@ -123,7 +135,9 @@ fun App(navController: androidx.navigation.NavHostController) {
             MonthDetailScreen(
                 NavRoutes.DetailMonth.fromEntry(it),
                 viewModel,
-                navController
+                onBack = {
+                    navController.navigateUp()
+                }
             )
         }
     }

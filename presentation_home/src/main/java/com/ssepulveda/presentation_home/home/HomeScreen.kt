@@ -1,6 +1,5 @@
 package com.ssepulveda.presentation_home.home
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.ssepulveda.presentation_common.inputs.DetailInput
 import com.ssepulveda.presentation_common.navigation.NavRoutes
 import com.ssepulveda.presentation_common.state.CommonScreen
@@ -55,7 +53,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    navController: NavHostController,
+    onDestination:(route: String) -> Unit
 ) {
 
     val snackBarHostState = remember { SnackbarHostState() }
@@ -68,9 +66,10 @@ fun HomeScreen(
             Home(
                 viewModel,
                 it,
-                navController,
                 snackBarHostState
-            )
+            ) {route ->
+                onDestination(route)
+            }
         }
     }
 
@@ -78,7 +77,7 @@ fun HomeScreen(
         viewModel.singleEventFlow.collectLatest {
             when (it) {
                 is HomeSingleEvent.OpenAddBill -> {
-                    navController.navigate(it.navRoute)
+                    onDestination(it.navRoute)
                 }
             }
         }
@@ -95,7 +94,6 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collectLatest {
             if (uiEvent != it) {
-                Log.d("POTATO", "Collect UIEVENT $it")
                 uiEvent = it
             }
         }
@@ -108,8 +106,8 @@ fun HomeScreen(
 private fun Home(
     viewModel: HomeViewModel,
     homeModel: HomeModel?,
-    navController: NavHostController,
     snackBarHostState: SnackbarHostState,
+    onNavigate: (route: String) -> Unit
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -119,7 +117,7 @@ private fun Home(
         drawerContent = {
             ModalDrawerSheet(
                 modifier = Modifier.width(230.dp)
-            ) { Menu(navController) }
+            ) { Menu(onNavigate) }
         },
     ) {
         Scaffold(
@@ -203,7 +201,7 @@ private fun Home(
                         it,
                         homeModel?.localCode ?: "COP",
                         onClick = { billId ->
-                            navController.navigate(
+                            onNavigate(
                                 NavRoutes.DetailBill.routeForDetail(
                                     DetailInput(
                                         billId.toLong()

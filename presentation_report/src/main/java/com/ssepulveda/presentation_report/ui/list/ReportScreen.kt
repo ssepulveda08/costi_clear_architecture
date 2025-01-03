@@ -36,7 +36,8 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun ReportScreen(
     viewModel: ReportViewModel,
-    navController: NavHostController?
+    onNavigate: (route: String) -> Unit,
+    onBack: () -> Unit,
 ) {
 
     LaunchedEffect(Unit) {
@@ -44,7 +45,7 @@ fun ReportScreen(
     }
     viewModel.uiStateFlow.collectAsState().value.let { state ->
         CommonScreen(state = state) {
-            Report(it, navController)
+            Report(it, onNavigate, onBack)
         }
     }
 
@@ -59,13 +60,14 @@ fun ReportScreen(
 @Composable
 private fun Report(
     model: ReportModel?,
-    navController: NavHostController?
+    onNavigate: (route: String) -> Unit,
+    onBack: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             SingleToolbar(
                 title = stringResource(R.string.copy_report),
-                navController = navController
+                onBack
             )
         },
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -79,7 +81,7 @@ private fun Report(
             items(model?.months ?: listOf()) {
                 ItemMonth(it, localCode) { month ->
                     Log.d("POTATO", "Route ${NavRoutes.DetailMonth.routeForMonth(month)}")
-                    navController?.navigate(
+                    onNavigate(
                         NavRoutes.DetailMonth.routeForMonth(month)
                     )
                 }

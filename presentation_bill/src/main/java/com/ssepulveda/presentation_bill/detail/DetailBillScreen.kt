@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun DetailBillScreen(
     viewModel: DetailBillViewModel,
     input: DetailInput,
-    navController: NavController
+    onBack: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         viewModel.submitAction(DetailBillUiAction.LoadData(input))
@@ -28,15 +28,14 @@ fun DetailBillScreen(
     viewModel.uiStateFlow.collectAsState().value.let { state ->
         CommonScreen(state = state) {
             it?.let { form ->
-                //Log.d("POTATO", "Form ${form.typeSelect}")
                 FormBillComponent(
                     input = form,
-                    navController = navController,
                     title = stringResource(R.string.title_edit_bill),
                     isEditable = true,
                     onCompleted = {
                         viewModel.submitAction(DetailBillUiAction.UpdateBill(it))
-                    }
+                    },
+                    onBack = onBack
                 )
             }
 
@@ -46,7 +45,7 @@ fun DetailBillScreen(
     LaunchedEffect(Unit) {
         viewModel.singleEventFlow.collectLatest {
             when(it) {
-                DetailBillSingleEvent.Close -> navController.popBackStack()
+                DetailBillSingleEvent.Close -> onBack()
             }
         }
     }
