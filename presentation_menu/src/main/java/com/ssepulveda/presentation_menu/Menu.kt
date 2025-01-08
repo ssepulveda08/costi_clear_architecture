@@ -60,7 +60,6 @@ fun Menu(
             ItemMenu(
                 stringResource(R.string.copy_report_for_month)
             ) {
-                //navController?.navigate(NavRoutes.Months.route)
                 onNavigate(NavRoutes.Months.route)
             }
             ItemMenu(

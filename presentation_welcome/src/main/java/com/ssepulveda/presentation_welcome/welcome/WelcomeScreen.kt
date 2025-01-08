@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.ssepulveda.presentation_common.state.CommonScreen
 import com.ssepulveda.presentation_welcome.R
 import kotlinx.coroutines.flow.collectLatest
@@ -24,7 +23,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun WelcomeScreen(
     viewModel: WelcomeViewModel,
-    navController: NavController?
+    onDestination : (String) -> Unit,
 ) {
 
     viewModel.uiStateFlow.collectAsState().value.let { state ->
@@ -39,7 +38,7 @@ fun WelcomeScreen(
         viewModel.singleEventFlow.collectLatest {
             when (it) {
                 is WelcomeSingleEvent.OpenHomeScreen -> {
-                    navController?.navigate(it.navRoute)
+                    onDestination(it.navRoute)
                 }
             }
         }

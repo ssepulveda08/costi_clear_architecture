@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun SplashScreen(
     viewModel: SplashViewModel,
-    navController: NavController
+    onDestination : (String) -> Unit,
 ) {
     LaunchedEffect(Unit) {
         viewModel.submitAction(SplashUiAction.ValidateConfiguration)
@@ -23,13 +23,12 @@ fun SplashScreen(
 
     LaunchedEffect(Unit) {
         viewModel.singleEventFlow.collectLatest {
-            when (it) {
-
+            when(it) {
                 is SplashSingleEvent.OpenWelcomeScreen -> {
-                    navController.navigate(it.navRoute)
+                    onDestination.invoke(it.navRoute)
                 }
                 is SplashSingleEvent.OpenHomeScreen -> {
-                    navController.navigate(it.navRoute)
+                    onDestination.invoke(it.navRoute)
                 }
             }
         }

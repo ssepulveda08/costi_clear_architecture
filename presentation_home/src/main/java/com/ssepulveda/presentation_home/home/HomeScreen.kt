@@ -53,7 +53,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    onDestination:(route: String) -> Unit
+    onDestination: (route: String) -> Unit
 ) {
 
     val snackBarHostState = remember { SnackbarHostState() }
@@ -67,7 +67,7 @@ fun HomeScreen(
                 viewModel,
                 it,
                 snackBarHostState
-            ) {route ->
+            ) { route ->
                 onDestination(route)
             }
         }
@@ -137,7 +137,7 @@ private fun Home(
             },
             contentWindowInsets = WindowInsets.safeDrawing, //WindowInsets.statusBars,
             floatingActionButton = {
-                if (snackBarHostState.currentSnackbarData == null ) {
+                if (snackBarHostState.currentSnackbarData == null) {
                     ExtendedFloatingActionButton(
                         onClick = {
                             viewModel.submitSingleEvent(
@@ -150,8 +150,8 @@ private fun Home(
                         text = { Text(text = stringResource(id = R.string.copy_add_bill)) },
                     )
                 }
-            }
-            ,snackbarHost = {
+            },
+            snackbarHost = {
                 SnackbarHost(snackBarHostState)
             },
         ) { innerPadding ->
