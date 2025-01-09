@@ -1,8 +1,10 @@
 package com.ssepulveda.presentation_common.ui
 
 import androidx.compose.ui.graphics.Color
+import java.lang.Exception
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.Currency
 import java.util.Currency.getInstance
 import java.util.Date
 import java.util.Locale
@@ -57,8 +59,19 @@ fun String.toCurrencyFormat(localeCode: String): String {
 
 fun Double.toCurrencyFormat(currencyCode: String): String {
     val formatter = DecimalFormat("#,###")
-    formatter.currency = getInstance(currencyCode)
-    return formatter.currency?.currencyCode.orEmpty() + " " + formatter.format(this)
+    return getCurrency(currencyCode)?.let {
+         formatter.currency = it
+         formatter.currency?.currencyCode.orEmpty() + " " + formatter.format(this)
+    } ?: ""
+}
+
+/**
+ *
+ */
+private fun getCurrency(currencyCode: String): Currency? = try {
+    getInstance(currencyCode)
+} catch (e: Exception) {
+    null
 }
 
 fun Double?.orZero() = this ?: 0.0
